@@ -1,23 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  loginUser,
+  logoutUserFromApp,
+  setInitialUser,
+  signupUser,
+} from './redux/actions/userActions';
 
 function App() {
+  const { userId } = useSelector(state => state.user);
+  console.log(userId);
+  const dispatch = useDispatch();
+  const user = {
+    email: 'testemail@email.cz',
+    password: 'Test123456',
+    firstName: 'John',
+    lastName: 'Doee',
+  };
+
+  const handleSignup = () => {
+    dispatch(signupUser(user));
+  };
+
+  const handleLogin = () => {
+    dispatch(loginUser(user));
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUserFromApp());
+  };
+
+  useEffect(() => {
+    dispatch(setInitialUser());
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>test</h1>
+      <p>{}</p>
+      <button onClick={handleSignup}>Click to signup</button>
+      <button onClick={handleLogout}>Logout user</button>
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
 }
