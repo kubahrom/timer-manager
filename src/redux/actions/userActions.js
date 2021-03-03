@@ -4,22 +4,32 @@ import firebase from '../../firebase/firebase';
 export const SET_USER = 'set_user';
 export const LOG_OUT = 'log_out';
 export const USER_ERROR = 'user_error';
+export const INIT_SET_USER = 'init_set_user';
+export const INIT_SET_NOT_USER = 'init_set_not_user';
 
 //Set user action creator
 const setUser = payload => ({ type: SET_USER, payload });
+
+//Initial user load
+const initSetUser = payload => ({ type: INIT_SET_USER, payload });
+//Initial
+const initSetNotUser = () => ({ type: INIT_SET_NOT_USER });
 
 //Logout user action creator
 const logoutUser = () => ({
   type: LOG_OUT,
 });
 
+//Error action creator
 const userError = payload => ({ type: USER_ERROR, payload });
 
 //Set initial user after app load
 export const setInitialUser = () => dispatch => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      dispatch(setUser(user.uid));
+      dispatch(initSetUser(user.uid));
+    } else {
+      dispatch(initSetNotUser());
     }
   });
 };
@@ -62,7 +72,19 @@ export const loginUser = userInfo => async dispatch => {
       .signInWithEmailAndPassword(userInfo.email, userInfo.password);
     await dispatch(setUser(data.user.uid));
   } catch (err) {
-    console.error(err);
+    switch (err.code) {
+      case 'auth/user-not-found':
+        dispatch(userError({ notFound: err.message }));
+        break;
+      case 'auth/invalid-email':
+        dispatch(userError({ invalidEmail: err.message }));
+        break;
+      case 'auth/wrong-password':
+        dispatch(userError({ wrongPassword: err.message }));
+        break;
+      default:
+        break;
+    }
   }
 };
 

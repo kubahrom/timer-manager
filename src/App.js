@@ -1,47 +1,44 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  loginUser,
-  logoutUserFromApp,
-  setInitialUser,
-  signupUser,
-} from './redux/actions/userActions';
+import { setInitialUser } from './redux/actions/userActions';
+
+import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
+import Layout from './components/shared/Layout/Layout';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import styles from './styles/app.module.scss';
 
 function App() {
-  const { userId } = useSelector(state => state.user);
-  console.log(userId);
   const dispatch = useDispatch();
-  const user = {
-    email: 'testemail@email.cz',
-    password: 'Test123456',
-    firstName: 'John',
-    lastName: 'Doee',
-  };
+  const isLoading = useSelector(state => state.user.initUserLoad);
+  const darkTheme = useSelector(state => state.theme.darkTheme);
 
-  const handleSignup = () => {
-    dispatch(signupUser(user));
-  };
-
-  const handleLogin = () => {
-    dispatch(loginUser(user));
-  };
-
-  const handleLogout = () => {
-    dispatch(logoutUserFromApp());
-  };
+  const theme = createMuiTheme({
+    palette: {
+      type: darkTheme ? 'dark' : 'light',
+    },
+  });
 
   useEffect(() => {
     dispatch(setInitialUser());
   }, [dispatch]);
 
   return (
-    <div>
-      <h1>test</h1>
-      <p>{}</p>
-      <button onClick={handleSignup}>Click to signup</button>
-      <button onClick={handleLogout}>Logout user</button>
-      <button onClick={handleLogin}>Login</button>
-    </div>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <CssBaseline>
+          {isLoading ? (
+            <div className={styles.loader_wrapper}>
+              <CircularProgress color="inherit" />
+            </div>
+          ) : (
+            <Layout />
+          )}
+        </CssBaseline>
+      </ThemeProvider>
+    </Router>
   );
 }
 

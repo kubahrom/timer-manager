@@ -1,9 +1,16 @@
-import { SET_USER, LOG_OUT, USER_ERROR } from '../actions/userActions';
+import {
+  SET_USER,
+  LOG_OUT,
+  USER_ERROR,
+  INIT_SET_USER,
+  INIT_SET_NOT_USER,
+} from '../actions/userActions';
 
 const initialState = {
   loggedIn: false,
   userId: {},
   errorMessage: {},
+  initUserLoad: true,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -26,6 +33,19 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         errorMessage: action.payload,
+      };
+    case INIT_SET_USER:
+      return {
+        ...state,
+        loggedIn: true,
+        userId: action.payload,
+        errorMessage: {},
+        initUserLoad: false,
+      };
+    case INIT_SET_NOT_USER:
+      return {
+        ...state,
+        initUserLoad: false,
       };
     default:
       return state;
