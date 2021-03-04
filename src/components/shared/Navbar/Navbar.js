@@ -1,10 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  loginUser,
-  logoutUserFromApp,
-  signupUser,
-} from '../../../redux/actions/userActions';
+import { logoutUserFromApp } from '../../../redux/actions/userActions';
 import { switchTheme } from '../../../redux/actions/themeActions';
 
 import styles from './styles.module.scss';
@@ -18,25 +14,12 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const loggedUser = useSelector(state => state.user.loggedIn);
   const darkTheme = useSelector(state => state.theme.darkTheme);
   const dispatch = useDispatch();
-  const user = {
-    email: 'testemail@email.cz',
-    password: 'Test123456',
-    firstName: 'John',
-    lastName: 'Doee',
-  };
-
-  const handleSignup = () => {
-    dispatch(signupUser(user));
-  };
-
-  const handleLogin = () => {
-    dispatch(loginUser(user));
-  };
 
   const handleLogout = () => {
     dispatch(logoutUserFromApp());
@@ -53,7 +36,7 @@ const Navbar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={styles.title}>
-          Timer Manager
+          <Link to="/">Timer Manager</Link>
         </Typography>
         <div className={styles.menu}>
           {darkTheme ? (
@@ -80,12 +63,12 @@ const Navbar = () => {
             </Button>
           ) : (
             <>
-              <Button color="inherit" onClick={handleLogin}>
-                Login
-              </Button>
-              <Button color="inherit" onClick={handleSignup}>
-                Register
-              </Button>
+              <Link to="/login">
+                <Button color="inherit">Login</Button>
+              </Link>
+              <Link to="/register">
+                <Button color="inherit">Register</Button>
+              </Link>
             </>
           )}
         </div>

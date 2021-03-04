@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInitialUser } from './redux/actions/userActions';
 
 import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
-import Layout from './components/shared/Layout/Layout';
+import Layout from './components/Shared/Layout/Layout';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { BrowserRouter as Router } from 'react-router-dom';
