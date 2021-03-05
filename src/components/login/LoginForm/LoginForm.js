@@ -21,6 +21,7 @@ const LoginForm = ({
   rememberMe,
   setRemeberMe,
   invalidLogin,
+  errorEmail,
 }) => {
   return (
     <main className="form">
@@ -67,6 +68,10 @@ const LoginForm = ({
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         fullWidth={true}
+                        error={errorEmail ? true : false}
+                        helperText={
+                          errorEmail ? 'Invalid email address' : false
+                        }
                         required
                       />
                     </Grid>

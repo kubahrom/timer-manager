@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [rememberMe, setRemeberMe] = useState(false);
+  const [errorEmail, setErrorEmail] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -43,7 +44,7 @@ const Login = () => {
     if (isEmail) {
       dispatch(loginUser({ email, password }));
     } else {
-      console.log('error');
+      setErrorEmail(true);
     }
   };
 
@@ -58,6 +59,7 @@ const Login = () => {
         setRemeberMe={setRemeberMe}
         handleSubmit={handleSubmit}
         invalidLogin={invalidLogin}
+        errorEmail={errorEmail}
       />
       <button onClick={handleLogin}>Login</button>
     </>
