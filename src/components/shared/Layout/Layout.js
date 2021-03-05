@@ -14,7 +14,7 @@ const Layout = () => {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={Home} />
+        <Route path="/" exact component={Home} />
         <Route component={Custom404} />
       </Switch>
     </>

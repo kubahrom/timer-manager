@@ -7,8 +7,8 @@ const Theme = ({ children }) => {
   const theme = createMuiTheme({
     palette: {
       type: darkTheme ? 'dark' : 'light',
-      secondary: {
-        main: '#9fa8da',
+      primary: {
+        main: '#448aff',
       },
     },
     typography: {

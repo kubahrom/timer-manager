@@ -74,13 +74,15 @@ export const loginUser = userInfo => async dispatch => {
   } catch (err) {
     switch (err.code) {
       case 'auth/user-not-found':
-        dispatch(userError({ notFound: err.message }));
+        dispatch(
+          userError({ invalidLogin: 'User with this email not found.' })
+        );
         break;
       case 'auth/invalid-email':
-        dispatch(userError({ invalidEmail: err.message }));
+        dispatch(userError({ invalidLogin: 'Invalid email or password.' }));
         break;
       case 'auth/wrong-password':
-        dispatch(userError({ wrongPassword: err.message }));
+        dispatch(userError({ invalidLogin: 'Invalid email or password.' }));
         break;
       default:
         break;
