@@ -4,6 +4,7 @@ import {
   USER_ERROR,
   INIT_SET_USER,
   INIT_SET_NOT_USER,
+  RESET_USER_ERROR,
 } from '../actions/userActions';
 
 const initialState = {
@@ -46,6 +47,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         initUserLoad: false,
+      };
+    case RESET_USER_ERROR:
+      return {
+        ...state,
+        errorMessage: {},
       };
     default:
       return state;

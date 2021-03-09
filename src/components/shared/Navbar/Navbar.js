@@ -1,6 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutUserFromApp } from '../../../redux/actions/userActions';
+import {
+  logoutUserFromApp,
+  resetUserError,
+} from '../../../redux/actions/userActions';
 import { switchTheme } from '../../../redux/actions/themeActions';
 
 import styles from './styles.module.scss';
@@ -14,12 +17,13 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
-  const loggedUser = useSelector(state => state.user.loggedIn);
+  const { loggedIn } = useSelector(state => state.user);
   const darkTheme = useSelector(state => state.theme.darkTheme);
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const handleLogout = () => {
     dispatch(logoutUserFromApp());
@@ -27,6 +31,12 @@ const Navbar = () => {
 
   const handleSwitchTheme = () => {
     dispatch(switchTheme());
+  };
+
+  const resetUserState = e => {
+    if (pathname !== '/login' || pathname !== '/register') {
+      dispatch(resetUserError());
+    }
   };
 
   return (
@@ -57,16 +67,16 @@ const Navbar = () => {
             </IconButton>
           )}
 
-          {loggedUser ? (
+          {loggedIn ? (
             <Button color="inherit" onClick={handleLogout}>
               Logout
             </Button>
           ) : (
             <>
-              <Link to="/login">
+              <Link to="/login" onClick={e => resetUserState(e)}>
                 <Button color="inherit">Login</Button>
               </Link>
-              <Link to="/register">
+              <Link to="/register" onClick={e => resetUserState(e)}>
                 <Button color="inherit">Register</Button>
               </Link>
             </>

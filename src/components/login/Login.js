@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/actions/userActions';
 import validator from 'validator';
@@ -12,18 +11,39 @@ const Login = () => {
   const [rememberMe, setRemeberMe] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const {
-    loggedIn,
     errorMessage: { invalidLogin },
   } = useSelector(state => state.user);
 
-  useEffect(() => {
-    if (loggedIn) {
-      history.push('/');
+  //Validate email
+  const validateEmail = (emailInput = email) => {
+    const isEmail = validator.isEmail(emailInput);
+    if (!isEmail) {
+      setErrorEmail(true);
+    } else {
+      setErrorEmail(false);
     }
-  }, [loggedIn, history]);
+  };
+
+  //Validate email after change
+  const validateEmailOnChange = e => {
+    setEmail(e.target.value);
+    if (errorEmail) {
+      validateEmail(e.target.value);
+    }
+  };
+
+  //Submit login
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!errorEmail) {
+      dispatch(loginUser({ email, password }));
+      setPassword('');
+    } else {
+      setErrorEmail(true);
+    }
+  };
 
   //Testlogin
   const handleLogin = () => {
@@ -37,22 +57,11 @@ const Login = () => {
     );
   };
 
-  //Submit login
-  const handleSubmit = e => {
-    e.preventDefault();
-    const isEmail = validator.isEmail(email);
-    if (isEmail) {
-      dispatch(loginUser({ email, password }));
-    } else {
-      setErrorEmail(true);
-    }
-  };
-
   return (
     <>
       <LoginForm
         email={email}
-        setEmail={setEmail}
+        // setEmail={setEmail}
         password={password}
         setPassword={setPassword}
         rememberMe={rememberMe}
@@ -60,6 +69,8 @@ const Login = () => {
         handleSubmit={handleSubmit}
         invalidLogin={invalidLogin}
         errorEmail={errorEmail}
+        validateEmail={validateEmail}
+        validateEmailOnChange={validateEmailOnChange}
       />
       <button onClick={handleLogin}>Login</button>
     </>

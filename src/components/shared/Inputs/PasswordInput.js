@@ -23,7 +23,7 @@ const PasswordInput = ({ password, setPassword }) => {
     event.preventDefault();
   };
   return (
-    <FormControl variant="outlined" fullWidth={true} required>
+    <FormControl variant="outlined" fullWidth={true}>
       <InputLabel htmlFor="outlined-adornment-password" color="primary">
         Password
       </InputLabel>

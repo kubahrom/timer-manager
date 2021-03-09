@@ -15,13 +15,14 @@ import PasswordInput from '../../Shared/Inputs/PasswordInput';
 const LoginForm = ({
   handleSubmit,
   email,
-  setEmail,
   password,
   setPassword,
   rememberMe,
   setRemeberMe,
   invalidLogin,
   errorEmail,
+  validateEmail,
+  validateEmailOnChange,
 }) => {
   return (
     <main className="form">
@@ -66,13 +67,13 @@ const LoginForm = ({
                         type="email"
                         color="primary"
                         value={email}
-                        onChange={e => setEmail(e.target.value)}
                         fullWidth={true}
                         error={errorEmail ? true : false}
                         helperText={
                           errorEmail ? 'Invalid email address' : false
                         }
-                        required
+                        onBlur={() => validateEmail()}
+                        onChange={e => validateEmailOnChange(e)}
                       />
                     </Grid>
                     <Grid item>

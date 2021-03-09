@@ -4,6 +4,7 @@ import firebase from '../../firebase/firebase';
 export const SET_USER = 'set_user';
 export const LOG_OUT = 'log_out';
 export const USER_ERROR = 'user_error';
+export const RESET_USER_ERROR = 'reset_user_error';
 export const INIT_SET_USER = 'init_set_user';
 export const INIT_SET_NOT_USER = 'init_set_not_user';
 
@@ -22,6 +23,9 @@ const logoutUser = () => ({
 
 //Error action creator
 const userError = payload => ({ type: USER_ERROR, payload });
+
+//Reset user errors
+export const resetUserError = () => ({ type: RESET_USER_ERROR });
 
 //Set initial user after app load
 export const setInitialUser = () => dispatch => {
