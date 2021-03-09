@@ -22,7 +22,7 @@ const logoutUser = () => ({
 });
 
 //Error action creator
-const userError = payload => ({ type: USER_ERROR, payload });
+export const userError = payload => ({ type: USER_ERROR, payload });
 
 //Reset user errors
 export const resetUserError = () => ({ type: RESET_USER_ERROR });
@@ -54,13 +54,13 @@ export const signupUser = userInfo => async dispatch => {
   } catch (err) {
     switch (err.code) {
       case 'auth/email-already-in-use':
-        dispatch(userError({ usedEmail: err.message }));
+        dispatch(userError({ invalidRegister: 'Email already in use.' }));
         break;
       case 'auth/weak-password':
-        dispatch(userError({ weakPassword: err.message }));
+        dispatch(userError({ invalidRegister: 'Your password is weak.' }));
         break;
       case 'auth/invalid-email':
-        dispatch(userError({ invalidEmail: err.message }));
+        dispatch(userError({ invalidRegister: 'Invalid email.' }));
         break;
       default:
         break;

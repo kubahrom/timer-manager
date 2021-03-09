@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -8,7 +9,13 @@ import {
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 
-const PasswordInput = ({ password, setPassword }) => {
+const PasswordInput = ({
+  password,
+  setPassword,
+  errorPassword,
+  validatePassword,
+  validatePasswordOnChange,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = e => {
@@ -23,15 +30,23 @@ const PasswordInput = ({ password, setPassword }) => {
     event.preventDefault();
   };
   return (
-    <FormControl variant="outlined" fullWidth={true}>
-      <InputLabel htmlFor="outlined-adornment-password" color="primary">
+    <FormControl variant="outlined" fullWidth={true} required>
+      <InputLabel
+        htmlFor="outlined-adornment-password"
+        color="primary"
+        error={errorPassword ? true : false}
+      >
         Password
       </InputLabel>
       <OutlinedInput
         id="outlined-adornment-password"
         type={showPassword ? 'text' : 'password'}
         value={password}
-        onChange={handleChange}
+        onChange={
+          setPassword ? e => handleChange(e) : e => validatePasswordOnChange(e)
+        }
+        onBlur={validatePassword && (() => validatePassword())}
+        error={errorPassword ? true : false}
         color="primary"
         endAdornment={
           <InputAdornment position="end">
@@ -47,6 +62,12 @@ const PasswordInput = ({ password, setPassword }) => {
         }
         labelWidth={70}
       />
+      {errorPassword && (
+        <FormHelperText error>
+          Password must be atleast 6 char length and contain 1 uppercase and 1
+          number.
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };

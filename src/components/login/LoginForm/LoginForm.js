@@ -74,6 +74,7 @@ const LoginForm = ({
                         }
                         onBlur={() => validateEmail()}
                         onChange={e => validateEmailOnChange(e)}
+                        required
                       />
                     </Grid>
                     <Grid item>

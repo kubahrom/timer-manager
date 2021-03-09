@@ -15,16 +15,24 @@ import PasswordInput from '../../Shared/Inputs/PasswordInput';
 const RegisterForm = ({
   handleSubmit,
   firstName,
-  setFirstName,
+  errorFirstName,
+  validateFirstName,
+  validateFirstNameOnChange,
   lastName,
-  setLastName,
+  errorLastName,
+  validateLastName,
+  validateLastNameOnChange,
   email,
-  setEmail,
+  errorEmail,
+  validateEmail,
+  validateEmailOnChange,
   password,
-  setPassword,
+  errorPassword,
+  validatePassword,
+  validatePasswordOnChange,
   policyAgreement,
   setPolicyAgreement,
-  invalidLogin,
+  invalidRegister,
 }) => {
   return (
     <main className="form">
@@ -42,7 +50,7 @@ const RegisterForm = ({
                   Sign up
                 </Typography>
               </Box>
-              {invalidLogin && (
+              {invalidRegister && (
                 <Box pb={2}>
                   <Typography
                     variant="subtitle1"
@@ -50,7 +58,7 @@ const RegisterForm = ({
                     align="center"
                     gutterBottom={true}
                   >
-                    {invalidLogin}
+                    {invalidRegister}
                   </Typography>
                 </Box>
               )}
@@ -71,8 +79,10 @@ const RegisterForm = ({
                             type="text"
                             color="primary"
                             value={firstName}
-                            onChange={e => setFirstName(e.target.value)}
                             fullWidth={true}
+                            onBlur={() => validateFirstName()}
+                            error={errorFirstName ? true : false}
+                            onChange={e => validateFirstNameOnChange(e)}
                             required
                           />
                         </Grid>
@@ -83,8 +93,10 @@ const RegisterForm = ({
                             type="text"
                             color="primary"
                             value={lastName}
-                            onChange={e => setLastName(e.target.value)}
                             fullWidth={true}
+                            onBlur={() => validateLastName()}
+                            error={errorLastName ? true : false}
+                            onChange={e => validateLastNameOnChange(e)}
                             required
                           />
                         </Grid>
@@ -97,15 +109,22 @@ const RegisterForm = ({
                         type="email"
                         color="primary"
                         value={email}
-                        onChange={e => setEmail(e.target.value)}
                         fullWidth={true}
+                        error={errorEmail ? true : false}
+                        helperText={
+                          errorEmail ? 'Invalid email address' : false
+                        }
+                        onBlur={() => validateEmail()}
+                        onChange={e => validateEmailOnChange(e)}
                         required
                       />
                     </Grid>
                     <Grid item>
                       <PasswordInput
                         password={password}
-                        setPassword={setPassword}
+                        errorPassword={errorPassword}
+                        validatePassword={validatePassword}
+                        validatePasswordOnChange={validatePasswordOnChange}
                       />
                     </Grid>
                     <Grid item>

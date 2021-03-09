@@ -61,7 +61,6 @@ const Login = () => {
     <>
       <LoginForm
         email={email}
-        // setEmail={setEmail}
         password={password}
         setPassword={setPassword}
         rememberMe={rememberMe}
