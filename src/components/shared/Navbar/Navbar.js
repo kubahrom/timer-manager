@@ -1,89 +1,100 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  logoutUserFromApp,
-  resetUserError,
-} from '../../../redux/actions/userActions';
-import { switchTheme } from '../../../redux/actions/themeActions';
-
-import styles from './styles.module.scss';
 import {
   AppBar,
   Toolbar,
   IconButton,
-  Button,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import MainMenu from './MainMenu/MainMenu';
+import { useState } from 'react';
+import Sidebar from './Sidebar/Sidebar';
+import { useSelector } from 'react-redux';
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles(theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 8,
+  },
+  appTitle: {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  },
+  hide: {
+    display: 'none',
+  },
+  mainMenu: {
+    flexGrow: 1,
+    paddingRight: 8,
+  },
+}));
 
 const Navbar = () => {
+  const classes = useStyles();
   const { loggedIn } = useSelector(state => state.user);
-  const darkTheme = useSelector(state => state.theme.darkTheme);
-  const dispatch = useDispatch();
-  const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logoutUserFromApp());
+  const handleDrawerOpen = () => {
+    setOpen(true);
   };
 
-  const handleSwitchTheme = () => {
-    dispatch(switchTheme());
-  };
-
-  const resetUserState = e => {
-    if (pathname !== '/login' || pathname !== '/register') {
-      dispatch(resetUserError());
-    }
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" className={styles.title}>
-          <Link to="/">Timer Manager</Link>
-        </Typography>
-        <div className={styles.menu}>
-          {darkTheme ? (
+    <>
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          {loggedIn && (
             <IconButton
-              aria-label="dark-mode"
+              edge="start"
               color="inherit"
-              onClick={handleSwitchTheme}
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open,
+              })}
             >
-              <Brightness7Icon />
-            </IconButton>
-          ) : (
-            <IconButton
-              aria-label="dark-mode"
-              color="inherit"
-              onClick={handleSwitchTheme}
-            >
-              <Brightness4Icon />
+              <MenuIcon />
             </IconButton>
           )}
-
-          {loggedIn ? (
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
-          ) : (
-            <>
-              <Link to="/login" onClick={e => resetUserState(e)}>
-                <Button color="inherit">Login</Button>
-              </Link>
-              <Link to="/register" onClick={e => resetUserState(e)}>
-                <Button color="inherit">Register</Button>
-              </Link>
-            </>
-          )}
-        </div>
-      </Toolbar>
-    </AppBar>
+          <Typography variant="h6" className={classes.mainMenu}>
+            <Link to="/" className={classes.appTitle}>
+              Timer Manager
+            </Link>
+          </Typography>
+          <MainMenu loggedIn={loggedIn} />
+        </Toolbar>
+      </AppBar>
+      {loggedIn && (
+        <Sidebar open={open} handleDrawerClose={handleDrawerClose} />
+      )}
+    </>
   );
 };
 

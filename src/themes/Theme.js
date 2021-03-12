@@ -1,5 +1,8 @@
 import { useSelector } from 'react-redux';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import {
+  unstable_createMuiStrictModeTheme as createMuiTheme,
+  ThemeProvider,
+} from '@material-ui/core';
 
 const Theme = ({ children }) => {
   const darkTheme = useSelector(state => state.theme.darkTheme);
