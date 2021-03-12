@@ -31,7 +31,19 @@ export const resetUserError = () => ({ type: RESET_USER_ERROR });
 export const setInitialUser = () => dispatch => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      dispatch(initSetUser(user.uid));
+      //TODO______________________________________________________
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then(userData => {
+          if (userData.data() !== undefined) {
+            dispatch(initSetUser({ ...userData.data(), email: user.email }));
+          } else {
+            dispatch(initSetNotUser());
+          }
+        });
     } else {
       dispatch(initSetNotUser());
     }
@@ -50,7 +62,14 @@ export const signupUser = userInfo => async dispatch => {
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
     });
-    await dispatch(setUser(data.user.uid));
+    await dispatch(
+      setUser({
+        email: userInfo.email,
+        uid: data.user.uid,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+      })
+    );
   } catch (err) {
     switch (err.code) {
       case 'auth/email-already-in-use':
@@ -71,10 +90,12 @@ export const signupUser = userInfo => async dispatch => {
 // Login user to database
 export const loginUser = userInfo => async dispatch => {
   try {
-    const data = await firebase
+    //const data =
+    await firebase
       .auth()
       .signInWithEmailAndPassword(userInfo.email, userInfo.password);
-    await dispatch(setUser(data.user.uid));
+    //This will call rerender which cause initSetUser action
+    // await dispatch(setUser(data.user.uid));
   } catch (err) {
     switch (err.code) {
       case 'auth/user-not-found':

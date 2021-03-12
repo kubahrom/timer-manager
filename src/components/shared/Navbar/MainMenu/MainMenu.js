@@ -46,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 const MainMenu = ({ loggedIn }) => {
   const darkTheme = useSelector(state => state.theme.darkTheme);
+  const { firstName, lastName } = useSelector(state => state.user.user);
   const [openUserSettings, setOpenUserSettings] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -100,7 +101,9 @@ const MainMenu = ({ loggedIn }) => {
             aria-haspopup="true"
             onClick={() => setOpenUserSettings(!openUserSettings)}
           >
-            <span className={classes.userInfo}>Josh Wiliams</span>
+            <span className={classes.userInfo}>
+              {firstName} {lastName}
+            </span>
             <AccountCircle />
             {openUserSettings ? <ExpandLess /> : <ExpandMore />}
           </Button>

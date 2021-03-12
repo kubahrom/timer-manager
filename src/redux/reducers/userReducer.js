@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   loggedIn: false,
-  userId: {},
+  user: {},
   errorMessage: {},
   initUserLoad: true,
 };
@@ -20,14 +20,14 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedIn: true,
-        userId: action.payload,
+        user: action.payload,
         errorMessage: {},
       };
     case LOG_OUT:
       return {
         ...state,
         loggedIn: false,
-        userId: {},
+        user: {},
         errorMessage: {},
       };
     case USER_ERROR:
@@ -39,7 +39,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedIn: true,
-        userId: action.payload,
+        user: action.payload,
         errorMessage: {},
         initUserLoad: false,
       };
