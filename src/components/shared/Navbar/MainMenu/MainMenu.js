@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
+  Avatar,
   Button,
   ClickAwayListener,
   Grow,
@@ -13,12 +14,7 @@ import {
   Paper,
   Popper,
 } from '@material-ui/core';
-import {
-  AccountCircle,
-  ExitToApp,
-  ExpandLess,
-  ExpandMore,
-} from '@material-ui/icons/';
+import { ExitToApp, ExpandLess, ExpandMore } from '@material-ui/icons/';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import {
@@ -33,6 +29,11 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       display: 'none',
     },
+  },
+  userAvatar: {
+    width: 30,
+    height: 30,
+    fontSize: '1.05rem',
   },
   menuItemCenter: {
     display: 'flex',
@@ -104,7 +105,10 @@ const MainMenu = ({ loggedIn }) => {
             <span className={classes.userInfo}>
               {firstName} {lastName}
             </span>
-            <AccountCircle />
+            <Avatar className={classes.userAvatar}>
+              {firstName.slice(0, 1)}
+              {lastName.slice(0, 1)}
+            </Avatar>
             {openUserSettings ? <ExpandLess /> : <ExpandMore />}
           </Button>
           <Popper
