@@ -60,7 +60,7 @@ const PasswordInput = ({
             </IconButton>
           </InputAdornment>
         }
-        labelWidth={70}
+        labelwidth={70}
       />
       {errorPassword && (
         <FormHelperText error>

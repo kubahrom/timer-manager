@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ModalWithButton = ({ triggerBtn, title, children }) => {
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const classes = useStyles();
 
   const handleModalOpen = () => {

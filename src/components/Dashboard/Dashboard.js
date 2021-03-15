@@ -11,6 +11,7 @@ import {
 import SearchInput from '../Shared/Inputs/SearchInput';
 import ModalWithButton from '../Shared/Modals/ModalWithButton';
 import ProjectForm from '../Shared/Modals/ProjectForm';
+import ProjectList from './ProjectList/ProjectList';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -48,14 +49,7 @@ const Dashboard = () => {
       </Box>
       <Paper elevation={3} style={{ borderRadius: 20 }}>
         <Grid container className={classes.gridContainer}>
-          <Grid
-            item
-            sm={12}
-            md={5}
-            className={classes.gridItem}
-            alignItems="center"
-            alignContent="center"
-          >
+          <Grid item sm={12} md={5} className={classes.gridItem}>
             <SearchInput />
           </Grid>
           <Grid item sm={6} md={4} className={classes.gridItem}>
@@ -84,6 +78,7 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Paper>
+      <ProjectList />
     </Container>
   );
 };

@@ -28,7 +28,6 @@ const SearchInput = () => {
             </IconButton>
           </InputAdornment>
         }
-        labelWidth={70}
       />
     </FormControl>
   );
