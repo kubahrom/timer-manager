@@ -13,9 +13,9 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   contentWrapper: {
-    paddingTop: 56,
-    [theme.breakpoints.up('xs')]: {
-      paddingTop: 64,
+    paddingTop: 64,
+    [theme.breakpoints.down('xs')]: {
+      paddingTop: 56,
     },
   },
   contentWrapperLogged: {
@@ -39,8 +39,12 @@ const Layout = () => {
         })}
       >
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/dashboard" component={Dashboard} />
+          {loggedIn ? (
+            <Route path="/" exact component={Dashboard} />
+          ) : (
+            <Route path="/" exact component={Home} />
+          )}
+
           {loggedIn && pathname === '/register' ? (
             <Redirect to="/" />
           ) : (
@@ -50,6 +54,11 @@ const Layout = () => {
             <Redirect to="/" />
           ) : (
             <Route path="/login" component={Login} />
+          )}
+          {loggedIn && pathname === '/dashboard' ? (
+            <Route path="/dashboard" component={Dashboard} />
+          ) : (
+            <Redirect to="/login" />
           )}
           <Route component={Custom404} />
         </Switch>
