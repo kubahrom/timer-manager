@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Button,
   Dialog,
@@ -43,6 +44,12 @@ const ModalWithButton = ({ triggerBtn, title, children }) => {
     }
   };
 
+  const proppedChildren = React.isValidElement(children)
+    ? React.cloneElement(children, {
+        closeModal: handleModalClose,
+      })
+    : children;
+
   return (
     <>
       {triggerButton()}
@@ -59,7 +66,7 @@ const ModalWithButton = ({ triggerBtn, title, children }) => {
         >
           <Close />
         </IconButton>
-        <DialogContent>{children}</DialogContent>
+        <DialogContent>{proppedChildren}</DialogContent>
       </Dialog>
     </>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Navbar from '../../Shared/Navbar/Navbar';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Register from '../../Register/Register';
 import Login from '../../Login/Login';
 import Custom404 from '../../404/Custom404';
@@ -10,6 +10,7 @@ import Home from '../../Home/Home';
 import { useSelector } from 'react-redux';
 import Dashboard from '../../Dashboard/Dashboard';
 import { makeStyles } from '@material-ui/core';
+import ProjectDetails from '../../ProjectDetails/ProjectDetails';
 
 const useStyles = makeStyles(theme => ({
   contentWrapper: {
@@ -28,7 +29,6 @@ const useStyles = makeStyles(theme => ({
 
 const Layout = () => {
   const { loggedIn } = useSelector(state => state.user);
-  const { pathname } = useLocation();
   const classes = useStyles();
   return (
     <>
@@ -39,27 +39,19 @@ const Layout = () => {
         })}
       >
         <Switch>
-          {loggedIn ? (
-            <Route path="/" exact component={Dashboard} />
-          ) : (
-            <Route path="/" exact component={Home} />
-          )}
-
-          {loggedIn && pathname === '/register' ? (
-            <Redirect to="/" />
-          ) : (
-            <Route path="/register" component={Register} />
-          )}
-          {loggedIn && pathname === '/login' ? (
-            <Redirect to="/" />
-          ) : (
-            <Route path="/login" component={Login} />
-          )}
-          {loggedIn && pathname === '/dashboard' ? (
-            <Route path="/dashboard" component={Dashboard} />
-          ) : (
-            <Redirect to="/login" />
-          )}
+          <Route path="/" exact>
+            {loggedIn ? <Dashboard /> : <Home />}
+          </Route>
+          <Route path="/register">
+            {loggedIn ? <Dashboard /> : <Register />}
+          </Route>
+          <Route path="/login">{loggedIn ? <Dashboard /> : <Login />}</Route>
+          <Route path="/dashboard">
+            {loggedIn ? <Dashboard /> : <Login />}
+          </Route>
+          <Route path="/project/:id">
+            {loggedIn ? <ProjectDetails /> : <Login />}
+          </Route>
           <Route component={Custom404} />
         </Switch>
       </div>

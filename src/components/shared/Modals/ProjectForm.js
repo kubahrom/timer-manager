@@ -20,8 +20,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProjectForm = () => {
+const ProjectForm = ({ closeModal }) => {
   const [projectName, setProjectName] = useState('');
+  const [disableBtn, setDisableBtn] = useState(false);
   const classes = useStyles();
   const { uid } = useSelector(state => state.user.user);
   const dispatch = useDispatch();
@@ -37,8 +38,10 @@ const ProjectForm = () => {
       name: projectName,
       owner: uid,
       shared: [],
+      created: Date.now(),
     };
-    dispatch(createNewProject(testProject));
+    dispatch(createNewProject(testProject, closeModal));
+    setDisableBtn(true);
   };
   return (
     <form onSubmit={e => handleSubmit(e)} className={classes.form}>
@@ -65,6 +68,7 @@ const ProjectForm = () => {
         fullWidth
         type="submit"
         className={classes.submitBtn}
+        disabled={disableBtn}
       >
         Add new project
       </Button>

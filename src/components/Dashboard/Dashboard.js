@@ -17,6 +17,10 @@ const useStyles = makeStyles(theme => ({
   container: {
     marginTop: 8,
   },
+  paper: {
+    borderRadius: 20,
+    marginBottom: 16,
+  },
   gridContainer: {
     padding: 16,
   },
@@ -47,7 +51,7 @@ const Dashboard = () => {
           Your Projects
         </Typography>
       </Box>
-      <Paper elevation={3} style={{ borderRadius: 20 }}>
+      <Paper elevation={3} className={classes.paper}>
         <Grid container className={classes.gridContainer}>
           <Grid item sm={12} md={5} className={classes.gridItem}>
             <SearchInput />

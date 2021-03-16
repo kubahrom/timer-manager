@@ -1,8 +1,12 @@
-import { ADD_PROJECT, SET_PROJECTS } from '../actions/projectActions';
+import {
+  ADD_PROJECT,
+  SET_PROJECTS,
+  PROJECTS_ERROR,
+} from '../actions/projectActions';
 
 const initialState = {
   projects: [],
-  errorMessage: {},
+  errorMessage: '',
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -16,6 +20,11 @@ const projectReducer = (state = initialState, action) => {
       return {
         ...state,
         projects: [...state.projects, action.payload],
+      };
+    case PROJECTS_ERROR:
+      return {
+        ...state,
+        errorMessage: action.payload,
       };
     default:
       return state;
