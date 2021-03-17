@@ -80,7 +80,7 @@ const ProjectDetail = React.forwardRef(({ project }, ref) => {
         >
           <ComfirmationModal
             triggerBtn={{ type: 'deleteMenuItem' }}
-            title="Are you sure you want to delete this project?"
+            title={`Are you sure you want to delete ${project.name}?`}
             handleMenuClose={handleMenuClose}
             ref={ref}
             handleDeleteProject={handleDeleteProject}
