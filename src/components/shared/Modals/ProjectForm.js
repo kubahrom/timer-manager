@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 const ProjectForm = ({ closeModal }) => {
   const [projectName, setProjectName] = useState('');
   const [disableBtn, setDisableBtn] = useState(false);
+  const [nameError, setNameError] = useState(false);
   const classes = useStyles();
   const { uid } = useSelector(state => state.user.user);
   const dispatch = useDispatch();
@@ -33,15 +34,19 @@ const ProjectForm = ({ closeModal }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const testProject = {
-      id: uuidv4(),
-      name: projectName,
-      owner: uid,
-      shared: [],
-      created: Date.now(),
-    };
-    dispatch(createNewProject(testProject, closeModal));
-    setDisableBtn(true);
+    if (projectName === '') {
+      setNameError(true);
+    } else {
+      const testProject = {
+        id: uuidv4(),
+        name: projectName,
+        owner: uid,
+        shared: [],
+        created: Date.now(),
+      };
+      dispatch(createNewProject(testProject, closeModal));
+      setDisableBtn(true);
+    }
   };
   return (
     <form onSubmit={e => handleSubmit(e)} className={classes.form}>
@@ -53,10 +58,12 @@ const ProjectForm = ({ closeModal }) => {
         variant="outlined"
         value={projectName}
         onChange={handleNameChange}
+        error={nameError}
+        helperText={nameError && 'Name of the project is required'}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <LabelImportant color="primary" />
+              <LabelImportant color={nameError ? 'error' : 'primary'} />
             </InputAdornment>
           ),
         }}

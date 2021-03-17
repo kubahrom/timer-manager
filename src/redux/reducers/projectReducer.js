@@ -2,6 +2,7 @@ import {
   ADD_PROJECT,
   SET_PROJECTS,
   PROJECTS_ERROR,
+  DELETE_PROJECT,
 } from '../actions/projectActions';
 
 const initialState = {
@@ -25,6 +26,13 @@ const projectReducer = (state = initialState, action) => {
       return {
         ...state,
         errorMessage: action.payload,
+      };
+    case DELETE_PROJECT:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project.id !== action.payload
+        ),
       };
     default:
       return state;

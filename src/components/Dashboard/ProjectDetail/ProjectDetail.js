@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Grid,
   makeStyles,
@@ -8,9 +9,14 @@ import {
   CardContent,
   CardActions,
   Button,
+  Menu,
 } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { deleteProjectById } from '../../../redux/actions/projectActions';
+import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -22,13 +28,31 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     padding: 24,
   },
+  menu: {
+    borderRadius: 20,
+  },
 }));
 
-const ProjectDetail = ({ project }) => {
+const ProjectDetail = React.forwardRef(({ project }, ref) => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const created = new Date(project.created).toLocaleString();
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleBtnClick = () => {
+  const handleMenuOpen = e => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteProject = handleCloseDialog => {
+    dispatch(deleteProjectById(project.id, handleCloseDialog));
+  };
+
+  const handleOpenProjectBtnClick = () => {
     history.push(`/project/${project.id}`);
   };
   return (
@@ -36,7 +60,7 @@ const ProjectDetail = ({ project }) => {
       <Card className={classes.card} elevation={5}>
         <CardHeader
           action={
-            <IconButton>
+            <IconButton onClick={e => handleMenuOpen(e)}>
               <MoreVert />
             </IconButton>
           }
@@ -46,12 +70,30 @@ const ProjectDetail = ({ project }) => {
             </Typography>
           }
         />
-        <CardContent>Lorem ipsum dolor sit amet consectetur.</CardContent>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={() => handleMenuClose()}
+          className={classes.menu}
+        >
+          <ComfirmationModal
+            triggerBtn={{ type: 'deleteMenuItem' }}
+            title="Are you sure you want to delete this project?"
+            handleMenuClose={handleMenuClose}
+            ref={ref}
+            handleDeleteProject={handleDeleteProject}
+          />
+        </Menu>
+        <CardContent>
+          <Typography variant="body1">Created: {created}</Typography>
+        </CardContent>
         <CardActions className={classes.cardActions}>
           <Button
             color="primary"
             variant="outlined"
-            onClick={() => handleBtnClick()}
+            onClick={() => handleOpenProjectBtnClick()}
           >
             Open project
           </Button>
@@ -59,5 +101,5 @@ const ProjectDetail = ({ project }) => {
       </Card>
     </Grid>
   );
-};
+});
 export default ProjectDetail;

@@ -15,6 +15,9 @@ const addProject = payload => ({ type: ADD_PROJECT, payload });
 //Project error action creator
 const projectError = payload => ({ type: PROJECTS_ERROR, payload });
 
+//Delete project action creator
+const deleteProject = payload => ({ type: DELETE_PROJECT, payload });
+
 //Set projects based on user
 export const getProjects = () => async (dispatch, getState) => {
   try {
@@ -64,5 +67,16 @@ export const createNewProject = (project, closeModal) => async dispatch => {
     closeModal && closeModal();
   } catch (err) {
     console.error(err);
+  }
+};
+
+//Delete Project
+export const deleteProjectById = projectId => async dispatch => {
+  try {
+    const ref = firebase.firestore().collection('projects');
+    await ref.doc(projectId).delete();
+    await dispatch(deleteProject(projectId));
+  } catch (err) {
+    console.log(err);
   }
 };
