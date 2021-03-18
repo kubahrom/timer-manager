@@ -1,8 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  IconButton,
+  makeStyles,
+  Menu,
+  Typography,
+} from '@material-ui/core';
 import { ArrowBack, MoreVert } from '@material-ui/icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
+import { deleteProjectById } from '../../../redux/actions/projectActions';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -23,14 +31,31 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProjectInfo = ({ name, ownerId }) => {
+const ProjectInfo = React.forwardRef(({ name, ownerId, projectId }, ref) => {
   const classes = useStyles();
   const currentUser = useSelector(state => state.user.user);
   const [owner, setOwner] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleBackLink = () => {
     history.push('/dashboard');
+  };
+
+  const handleMenuOpen = e => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteProject = async handleCloseDialog => {
+    await dispatch(
+      deleteProjectById(projectId, handleCloseDialog, handleBackLink)
+    );
+    await handleBackLink();
   };
 
   useEffect(() => {
@@ -72,12 +97,31 @@ const ProjectInfo = ({ name, ownerId }) => {
         >
           <ArrowBack fontSize="large" />
         </IconButton>
-        <IconButton className={classes.iconBtn}>
+        <IconButton
+          className={classes.iconBtn}
+          onClick={e => handleMenuOpen(e)}
+        >
           <MoreVert fontSize="large" />
         </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={() => handleMenuClose()}
+          className={classes.menu}
+        >
+          <ComfirmationModal
+            triggerBtn={{ type: 'deleteMenuItem' }}
+            title={`Are you sure you want to delete ${name}?`}
+            handleMenuClose={handleMenuClose}
+            ref={ref}
+            handleDeleteProject={handleDeleteProject}
+          />
+        </Menu>
       </div>
     </div>
   );
-};
+});
 
 export default ProjectInfo;

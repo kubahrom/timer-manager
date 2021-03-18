@@ -38,7 +38,11 @@ const ProjectDetails = () => {
       style={{ padding: 8 }}
       className={classes.container}
     >
-      <ProjectInfo name={currentProject.name} ownerId={currentProject.owner} />
+      <ProjectInfo
+        name={currentProject.name}
+        ownerId={currentProject.owner}
+        projectId={currentProject.id}
+      />
 
       <Timer />
       {currentProject.created && <TimerTest created={currentProject.created} />}
