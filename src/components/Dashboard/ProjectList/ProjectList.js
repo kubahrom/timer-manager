@@ -2,26 +2,30 @@ import { Grid } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjects } from '../../../redux/actions/projectActions';
+import NoProjects from '../NoProjects/NoProjects';
 import ProjectDetail from '../ProjectDetail/ProjectDetail';
 
 const ProjectList = () => {
   const dispatch = useDispatch();
   const { loggedIn } = useSelector(state => state.user);
-  const { projects } = useSelector(state => state.projects);
+  const { projects, errorMessage } = useSelector(state => state.projects);
 
   useEffect(() => {
-    if (loggedIn) {
+    if (loggedIn && errorMessage !== 'no-projects' && projects.length === 0) {
       dispatch(getProjects());
     }
-  }, [loggedIn, dispatch]);
+  }, [loggedIn, dispatch, errorMessage, projects]);
   return (
     <>
-      <Grid container>
-        {projects.map(project => (
-          <ProjectDetail key={project.id} project={project} />
-        ))}
-      </Grid>
-      <pre>{JSON.stringify(projects, null, 2)}</pre>
+      {projects.length === 0 ? (
+        <NoProjects />
+      ) : (
+        <Grid container>
+          {projects.map(project => (
+            <ProjectDetail key={project.id} project={project} />
+          ))}
+        </Grid>
+      )}
     </>
   );
 };

@@ -14,7 +14,13 @@ const useStyles = makeStyles(theme => ({
   closeModalBtn: { position: 'absolute', top: 8, right: 8 },
 }));
 
-const ModalWithButton = ({ triggerBtn, title, children }) => {
+const ModalWithButton = ({
+  triggerBtn,
+  title,
+  fullWidthBtn,
+  btnSize,
+  children,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const classes = useStyles();
 
@@ -35,8 +41,9 @@ const ModalWithButton = ({ triggerBtn, title, children }) => {
           <Button
             color="primary"
             variant="contained"
-            fullWidth={true}
+            fullWidth={fullWidthBtn}
             onClick={handleModalOpen}
+            size={btnSize}
           >
             {triggerBtn.text}
           </Button>

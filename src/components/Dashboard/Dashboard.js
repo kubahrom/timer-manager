@@ -47,7 +47,7 @@ const Dashboard = () => {
       className={classes.container}
     >
       <Box pb={2} pt={2}>
-        <Typography variant="h3" variantMapping={{ h3: 'h1' }}>
+        <Typography variant="h3" component="h1">
           Your Projects
         </Typography>
       </Box>
@@ -76,6 +76,7 @@ const Dashboard = () => {
             <ModalWithButton
               triggerBtn={{ text: 'Add new project' }}
               title="Add a new project"
+              fullWidthBtn={true}
             >
               <ProjectForm />
             </ModalWithButton>
