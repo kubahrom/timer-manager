@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Button,
   InputAdornment,
@@ -7,7 +7,10 @@ import {
 } from '@material-ui/core';
 import { LabelImportant } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { createNewProject } from '../../../redux/actions/projectActions';
+import {
+  createNewProject,
+  updateProject,
+} from '../../../redux/actions/projectActions';
 import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProjectForm = ({ closeModal }) => {
+const ProjectForm = ({ closeModal, btnText, name, edit, id }) => {
   const [projectName, setProjectName] = useState('');
   const [disableBtn, setDisableBtn] = useState(false);
   const [nameError, setNameError] = useState(false);
@@ -28,14 +31,24 @@ const ProjectForm = ({ closeModal }) => {
   const { uid } = useSelector(state => state.user.user);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (name) {
+      setProjectName(name);
+    }
+  }, [name]);
+
   const handleNameChange = e => {
     setProjectName(e.target.value);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+
     if (projectName === '') {
       setNameError(true);
+    } else if (edit) {
+      dispatch(updateProject({ id, name: projectName }, closeModal));
+      setDisableBtn(true);
     } else {
       const testProject = {
         id: uuidv4(),
@@ -77,7 +90,7 @@ const ProjectForm = ({ closeModal }) => {
         className={classes.submitBtn}
         disabled={disableBtn}
       >
-        Add new project
+        {btnText}
       </Button>
     </form>
   );

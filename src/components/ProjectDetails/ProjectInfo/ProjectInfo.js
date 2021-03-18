@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
 import { deleteProjectById } from '../../../redux/actions/projectActions';
+import ModalWithButton from '../../Shared/Modals/ModalWithButton';
+import ProjectForm from '../../Shared/Modals/ProjectForm';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -111,6 +113,19 @@ const ProjectInfo = React.forwardRef(({ name, ownerId, projectId }, ref) => {
           onClose={() => handleMenuClose()}
           className={classes.menu}
         >
+          <ModalWithButton
+            triggerBtn={{ type: 'menuEdit', text: 'Edit' }}
+            title="Edit project"
+            permanent={true}
+            closeMenu={handleMenuClose}
+          >
+            <ProjectForm
+              name={name}
+              edit={true}
+              btnText="Save changes"
+              id={projectId}
+            />
+          </ModalWithButton>
           <ComfirmationModal
             triggerBtn={{ type: 'deleteMenuItem' }}
             title={`Are you sure you want to delete ${name}?`}

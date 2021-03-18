@@ -20,7 +20,7 @@ const ProjectList = () => {
       {projects.length === 0 ? (
         <NoProjects />
       ) : (
-        <Grid container>
+        <Grid container spacing={2}>
           {projects.map(project => (
             <ProjectDetail key={project.id} project={project} />
           ))}

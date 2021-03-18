@@ -16,7 +16,10 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     color: theme.palette.action.disabled,
+    paddingLeft: 32,
+    paddingRight: 32,
     paddingBottom: 16,
+    textAlign: 'center',
   },
 }));
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Checkbox,
@@ -39,6 +40,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Dashboard = () => {
+  const [mineProjectCheckbox, setMineProjectCheckBox] = useState(true);
+  const [sharedProjectCheckbox, setSharedProjectCheckBox] = useState(false);
   const classes = useStyles();
   return (
     <Container
@@ -60,13 +63,27 @@ const Dashboard = () => {
             <div className={classes.checkboxWrapper}>
               <FormControlLabel
                 control={
-                  <Checkbox checked color="primary" name="mineProjects" />
+                  <Checkbox
+                    checked={mineProjectCheckbox}
+                    color="primary"
+                    name="mineProjects"
+                    onChange={() =>
+                      setMineProjectCheckBox(!mineProjectCheckbox)
+                    }
+                  />
                 }
                 label="Show mine projects"
               />
               <FormControlLabel
                 control={
-                  <Checkbox checked color="primary" name="sharedProjects" />
+                  <Checkbox
+                    checked={sharedProjectCheckbox}
+                    color="primary"
+                    name="sharedProjects"
+                    onChange={() =>
+                      setSharedProjectCheckBox(!sharedProjectCheckbox)
+                    }
+                  />
                 }
                 label="Show shared projects"
               />
@@ -79,7 +96,7 @@ const Dashboard = () => {
               fullWidthBtn={true}
               permanent={true}
             >
-              <ProjectForm />
+              <ProjectForm btnText="Add new project" />
             </ModalWithButton>
           </Grid>
         </Grid>

@@ -5,6 +5,7 @@ export const SET_PROJECTS = 'set_projects';
 export const PROJECTS_ERROR = 'projects_error';
 export const ADD_PROJECT = 'add_project';
 export const DELETE_PROJECT = 'delete_project';
+export const UPDATE_PROJECT = 'update_project';
 
 //Set project action creator
 const setProjects = payload => ({ type: SET_PROJECTS, payload });
@@ -17,6 +18,12 @@ const projectError = payload => ({ type: PROJECTS_ERROR, payload });
 
 //Delete project action creator
 const deleteProject = payload => ({ type: DELETE_PROJECT, payload });
+
+//Update project action creator
+const updateProjectActionCreator = payload => ({
+  type: UPDATE_PROJECT,
+  payload,
+});
 
 //Set projects based on user
 export const getProjects = () => async (dispatch, getState) => {
@@ -81,6 +88,18 @@ export const deleteProjectById = projectId => async dispatch => {
     await ref.doc(projectId).delete();
     await dispatch(deleteProject(projectId));
   } catch (err) {
-    console.log(err);
+    console.error(err);
+  }
+};
+
+//Update project
+export const updateProject = (project, closeModal) => async dispatch => {
+  try {
+    const ref = firebase.firestore().collection('projects');
+    await ref.doc(project.id).update({ name: project.name });
+    dispatch(updateProjectActionCreator(project));
+    closeModal && closeModal();
+  } catch (err) {
+    console.error(err);
   }
 };
