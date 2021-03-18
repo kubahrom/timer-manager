@@ -25,7 +25,11 @@ export const getProjects = () => async (dispatch, getState) => {
     const ref = firebase.firestore().collection('projects');
     const res = await ref.where('owner', '==', uid).get();
     const data = await res.docs.map(doc => doc.data());
-    dispatch(setProjects(data));
+    if (data.length !== 0) {
+      dispatch(setProjects(data));
+    } else {
+      dispatch(projectError('no-projects'));
+    }
   } catch (err) {
     console.error(err);
   }

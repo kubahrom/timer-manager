@@ -1,53 +1,84 @@
-import { Button } from '@material-ui/core';
-import { useState, useEffect } from 'react';
-const Timer = ({ created }) => {
-  const [differenceInSeconds, setDifferenceInSeconds] = useState(0);
-  const [interv, setInterv] = useState();
-  const [startBtn, setStartBtn] = useState(false);
-  const dateCreated = new Date(created);
+import {
+  Button,
+  Grid,
+  IconButton,
+  makeStyles,
+  Paper,
+  TextField,
+  Typography,
+} from '@material-ui/core';
+import { Pause, PlayArrow, Stop } from '@material-ui/icons';
 
-  const handleStartTimer = () => {
-    setInterv(setInterval(run, 1000));
-    setStartBtn(true);
-  };
+const useStyles = makeStyles(theme => ({
+  paper: {
+    borderRadius: 20,
+    padding: 24,
+  },
+  btnPlay: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    boxShadow: theme.shadows[3],
+    marginRight: 8,
+    marginLeft: 8,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.light,
+    },
+    '&:disabled': {
+      backgroundColor: theme.palette.action.disabledBackground,
+    },
+  },
+  btnDelete: {
+    color: theme.palette.error.main,
+  },
+  actionWrapper: {
+    paddingTop: 16,
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  btnMarginLeft: {
+    marginLeft: 8,
+  },
+}));
 
-  const handleStopTimer = () => {
-    setInterv(clearInterval(interv));
-    setStartBtn(false);
-  };
-
-  const run = () => {
-    const dateNow = new Date();
-    const difference = Math.ceil((dateNow - dateCreated) / 1000);
-    setDifferenceInSeconds(difference);
-  };
-
-  useEffect(() => {
-    return () => {
-      setInterv(clearInterval(interv));
-    };
-    //eslint-disable-next-line
-  }, []);
-
-  console.log(differenceInSeconds);
+const Timer = () => {
+  const classes = useStyles();
   return (
-    <div style={{ textAlign: 'center' }}>
-      <h1>Timer</h1>
-      <Button
-        variant="contained"
-        disabled={startBtn}
-        onClick={() => handleStartTimer()}
-      >
-        Start
-      </Button>
-      <Button
-        variant="contained"
-        disabled={!startBtn}
-        onClick={() => handleStopTimer()}
-      >
-        Stop
-      </Button>
-    </div>
+    <Paper elevation={4} className={classes.paper}>
+      <Grid container>
+        <Grid item md={3}>
+          <IconButton className={classes.btnPlay}>
+            <PlayArrow />
+          </IconButton>
+          <IconButton className={classes.btnPlay} disabled>
+            <Pause />
+          </IconButton>
+          <IconButton className={classes.btnPlay} disabled>
+            <Stop />
+          </IconButton>
+        </Grid>
+        <Grid item md={3}>
+          <Typography variant="h3">00:05:45</Typography>
+        </Grid>
+        <Grid item md={6}>
+          <TextField label="Comment" fullWidth type="text" variant="outlined" />
+        </Grid>
+      </Grid>
+      <div className={classes.actionWrapper}>
+        <Button className={classes.btnDelete}>Delete timer</Button>
+        <div>
+          <Button variant="outlined" color="primary">
+            Add separate timer
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.btnMarginLeft}
+          >
+            Add
+          </Button>
+        </div>
+      </div>
+    </Paper>
   );
 };
 

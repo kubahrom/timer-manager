@@ -1,15 +1,27 @@
+import { Container, makeStyles } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router';
 import { getProject } from '../../redux/actions/projectActions';
+import ProjectInfo from './ProjectInfo/ProjectInfo';
 import Timer from './Timer/Timer';
+import TimerTest from './Timer/TimerTest';
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    marginTop: 8,
+  },
+}));
 
 const ProjectDetails = () => {
+  const classes = useStyles();
   const { id } = useParams();
   const { projects, errorMessage } = useSelector(state => state.projects);
   const dispatch = useDispatch();
   const history = useHistory();
   const [currentProject, setCurrentProject] = useState({});
+
+  //Initial load of project, if not loaded
   useEffect(() => {
     if (projects.length === 0 && !errorMessage) {
       dispatch(getProject(id));
@@ -21,12 +33,16 @@ const ProjectDetails = () => {
   }, [projects, errorMessage, dispatch, id, history, currentProject]);
 
   return (
-    <>
-      <div>
-        <h1>id = {id}</h1>
-        {currentProject.created && <Timer created={currentProject.created} />}
-      </div>
-    </>
+    <Container
+      maxWidth="md"
+      style={{ padding: 8 }}
+      className={classes.container}
+    >
+      <ProjectInfo name={currentProject.name} ownerId={currentProject.owner} />
+
+      <Timer />
+      {currentProject.created && <TimerTest created={currentProject.created} />}
+    </Container>
   );
 };
 
