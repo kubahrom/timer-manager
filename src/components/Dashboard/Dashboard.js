@@ -77,6 +77,7 @@ const Dashboard = () => {
               triggerBtn={{ text: 'Add new project' }}
               title="Add a new project"
               fullWidthBtn={true}
+              permanent={true}
             >
               <ProjectForm />
             </ModalWithButton>

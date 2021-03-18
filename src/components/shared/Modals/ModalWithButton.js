@@ -19,6 +19,7 @@ const ModalWithButton = ({
   title,
   fullWidthBtn,
   btnSize,
+  permanent,
   children,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -51,11 +52,12 @@ const ModalWithButton = ({
     }
   };
 
-  const proppedChildren = React.isValidElement(children)
-    ? React.cloneElement(children, {
-        closeModal: handleModalClose,
-      })
-    : children;
+  const proppedChildren =
+    React.isValidElement(children) && permanent
+      ? React.cloneElement(children, {
+          closeModal: handleModalClose,
+        })
+      : children;
 
   return (
     <>
