@@ -4,15 +4,23 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  makeStyles,
   MenuItem,
 } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 
+const useStyles = makeStyles(theme => ({
+  btnDelete: {
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+  },
+}));
+
 const ComfirmationModal = React.forwardRef(
-  ({ triggerBtn, title, handleMenuClose, handleDeleteProject }, ref) => {
+  ({ triggerBtn, title, handleMenuClose, action }, ref) => {
     const [open, setOpen] = useState(false);
     const [btnDeleteDisabled, setBtnDeleteDisabled] = useState(false);
-
+    const classes = useStyles();
     const triggerButon = () => {
       switch (triggerBtn.type) {
         case 'deleteMenuItem':
@@ -27,6 +35,13 @@ const ComfirmationModal = React.forwardRef(
               </span>
             </MenuItem>
           );
+        case 'deleteBtn': {
+          return (
+            <Button className={classes.btnDelete} onClick={handleModalOpen}>
+              {triggerBtn.text}
+            </Button>
+          );
+        }
         default:
           return (
             <Button
@@ -47,11 +62,11 @@ const ComfirmationModal = React.forwardRef(
 
     const handleClose = () => {
       setOpen(false);
-      handleMenuClose(false);
+      handleMenuClose && handleMenuClose(false);
     };
     const handleDelete = () => {
       setBtnDeleteDisabled(true);
-      handleDeleteProject();
+      action();
     };
     return (
       <>

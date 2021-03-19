@@ -8,11 +8,15 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Pause, PlayArrow, Stop } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
+import { deleteTimerById } from '../../../redux/actions/timerActions';
+import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
 
 const useStyles = makeStyles(theme => ({
   paper: {
     borderRadius: 20,
     padding: 24,
+    marginBottom: 16,
   },
   btnPlay: {
     backgroundColor: theme.palette.primary.main,
@@ -27,22 +31,24 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.action.disabledBackground,
     },
   },
-  btnDelete: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-  },
   actionWrapper: {
     paddingTop: 16,
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   btnMarginLeft: {
     marginLeft: 8,
   },
 }));
 
-const Timer = () => {
+const Timer = ({ timer }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  const handleDeleteTimer = () => {
+    dispatch(deleteTimerById(timer.id));
+  };
+
   return (
     <Paper elevation={4} className={classes.paper}>
       <Grid container>
@@ -65,16 +71,23 @@ const Timer = () => {
         </Grid>
       </Grid>
       <div className={classes.actionWrapper}>
-        <Button variant="outlined" className={classes.btnDelete}>
-          Delete
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.btnMarginLeft}
-        >
-          Add
-        </Button>
+        <ComfirmationModal
+          triggerBtn={{ type: 'deleteBtn', text: 'Delete timer' }}
+          title={`Are you sure you want to delete this timer?`}
+          action={handleDeleteTimer}
+        />
+        <div>
+          <Button variant="outlined" color="primary">
+            Save timer
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.btnMarginLeft}
+          >
+            Add
+          </Button>
+        </div>
       </div>
     </Paper>
   );

@@ -30,6 +30,7 @@ const TimerReducer = (state = initialState, action) => {
       return {
         ...state,
         notFound: action.payload,
+        timers: [],
       };
     case DELETE_TIMER:
       return {

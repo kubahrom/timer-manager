@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { getTimers } from '../../../redux/actions/timerActions';
+import Timer from '../Timer/Timer';
 
 const TimerList = ({ projectId }) => {
   const [openTimers, setOpenTimers] = useState([]);
@@ -17,7 +17,8 @@ const TimerList = ({ projectId }) => {
     ) {
       dispatch(getTimers(projectId));
     } else if (notFound === projectId) {
-      console.log('No timers for this project');
+      setOpenTimers([]);
+      setClosedTimers([]);
     } else {
       setOpenTimers(
         timers.filter(
@@ -33,6 +34,9 @@ const TimerList = ({ projectId }) => {
   }, [dispatch, projectId, timers, notFound]);
   return (
     <>
+      {openTimers.map(openTimer => (
+        <Timer key={openTimer.id} timer={openTimer} />
+      ))}
       Open timers
       <br />
       <pre>{JSON.stringify(openTimers, null, 2)}</pre>

@@ -99,7 +99,7 @@ const ProjectDetail = React.forwardRef(({ project }, ref) => {
             title={`Are you sure you want to delete ${project.name}?`}
             handleMenuClose={handleMenuClose}
             ref={ref}
-            handleDeleteProject={handleDeleteProject}
+            action={handleDeleteProject}
           />
         </Menu>
         <CardContent>
