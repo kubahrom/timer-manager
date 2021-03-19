@@ -4,6 +4,7 @@ import firebase from '../../firebase/firebase';
 export const ADD_TIMER = 'add_timer';
 export const SET_TIMERS = 'set_timers';
 export const DELETE_TIMER = 'delete_timer';
+export const DELETE_TIMERS = 'delete_timers';
 export const UPDATE_TIMER = 'update_timer';
 export const TIMER_ERROR = 'timer_error';
 
@@ -19,6 +20,9 @@ const timerError = payload => ({ type: TIMER_ERROR, payload });
 //Delete timer action creator
 const deleteTimer = payload => ({ type: DELETE_TIMER, payload });
 
+//Delete timers action creator
+const deleteTimers = payload => ({ type: DELETE_TIMERS, payload });
+
 //Update timer action creator
 const updateTimerActionCreator = payload => ({ type: UPDATE_TIMER, payload });
 
@@ -30,18 +34,19 @@ export const getTimers = projectId => async dispatch => {
     if (data.length !== 0) {
       dispatch(setTimers(data));
     } else {
-      dispatch(timerError('not-found'));
+      dispatch(timerError(projectId));
     }
   } catch (err) {
     console.error(err);
   }
 };
 
-export const createNewTimer = timer => async dispatch => {
+export const createNewTimer = (timer, closeMenu) => async dispatch => {
   try {
     const ref = firebase.firestore().collection('timers');
     await ref.doc(timer.id).set(timer);
     dispatch(addTimer(timer));
+    closeMenu && closeMenu();
   } catch (err) {
     console.error(err);
   }
@@ -66,6 +71,27 @@ export const updateTimer = updatedTimer => async dispatch => {
       // TODO
       ();
     dispatch(updateTimerActionCreator(updatedTimer));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deleteTimersByProjectId = projectId => async dispatch => {
+  try {
+    const ref = firebase.firestore().collection('timers');
+    await ref
+      .where('projectId', '==', projectId)
+      .get()
+      .then(data => {
+        const batch = firebase.firestore().batch();
+
+        data.forEach(doc => batch.delete(doc.ref));
+        return batch.commit();
+      });
+    // const batch = firebase.batch()
+    // const batch = await res.forEach(doc => firebase.batch().delete(doc.ref));
+    // await batch.commit();
+    await dispatch(deleteTimers(projectId));
   } catch (err) {
     console.error(err);
   }

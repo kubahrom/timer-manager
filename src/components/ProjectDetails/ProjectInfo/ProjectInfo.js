@@ -4,15 +4,17 @@ import {
   IconButton,
   makeStyles,
   Menu,
+  MenuItem,
   Typography,
 } from '@material-ui/core';
-import { ArrowBack, MoreVert } from '@material-ui/icons';
+import { AddAlarm, ArrowBack, MoreVert } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
 import { deleteProjectById } from '../../../redux/actions/projectActions';
 import ModalWithButton from '../../Shared/Modals/ModalWithButton';
 import ProjectForm from '../../Shared/Modals/ProjectForm';
+import { deleteTimersByProjectId } from '../../../redux/actions/timerActions';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -33,110 +35,119 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProjectInfo = React.forwardRef(({ name, ownerId, projectId }, ref) => {
-  const classes = useStyles();
-  const currentUser = useSelector(state => state.user.user);
-  const [owner, setOwner] = useState('');
-  const [anchorEl, setAnchorEl] = useState(null);
-  const history = useHistory();
-  const dispatch = useDispatch();
+const ProjectInfo = React.forwardRef(
+  ({ name, ownerId, projectId, handleCreateTimer }, ref) => {
+    const classes = useStyles();
+    const currentUser = useSelector(state => state.user.user);
+    const [owner, setOwner] = useState('');
+    const [anchorEl, setAnchorEl] = useState(null);
+    const history = useHistory();
+    const dispatch = useDispatch();
 
-  const handleBackLink = () => {
-    history.push('/dashboard');
-  };
+    const handleBackLink = () => {
+      history.push('/dashboard');
+    };
 
-  const handleMenuOpen = e => {
-    setAnchorEl(e.currentTarget);
-  };
+    const handleMenuOpen = e => {
+      setAnchorEl(e.currentTarget);
+    };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+    };
 
-  const handleDeleteProject = async handleCloseDialog => {
-    await dispatch(
-      deleteProjectById(projectId, handleCloseDialog, handleBackLink)
-    );
-    await handleBackLink();
-  };
+    const handleDeleteProject = async handleCloseDialog => {
+      await dispatch(deleteTimersByProjectId(projectId));
+      await dispatch(
+        deleteProjectById(projectId, handleCloseDialog, handleBackLink)
+      );
+      await handleBackLink();
+    };
 
-  useEffect(() => {
-    if (currentUser.uid === ownerId) {
-      setOwner(`${currentUser.firstName} ${currentUser.lastName}`);
-    } else {
-      //TODO get owner if not current user and shared users
-      //   const ref = firebase.firestore().collection('users');
-      //   const res = ref
-      //     .doc(ownerId)
-      //     .get()
-      //     .then(userData => userData.data())
-      //     .catch(err => console.error(err));
-      //   console.log(res);
-    }
-  }, [currentUser, ownerId]);
-  return (
-    <div className={classes.wrapper}>
-      <Box pt={2}>
-        <Typography variant="h3" component="h1">
-          {name}
+    useEffect(() => {
+      if (currentUser.uid === ownerId) {
+        setOwner(`${currentUser.firstName} ${currentUser.lastName}`);
+      } else {
+        //TODO get owner if not current user and shared users
+        //   const ref = firebase.firestore().collection('users');
+        //   const res = ref
+        //     .doc(ownerId)
+        //     .get()
+        //     .then(userData => userData.data())
+        //     .catch(err => console.error(err));
+        //   console.log(res);
+      }
+    }, [currentUser, ownerId]);
+    return (
+      <div className={classes.wrapper}>
+        <Box pt={2}>
+          <Typography variant="h3" component="h1">
+            {name}
+          </Typography>
+        </Box>
+        <Box pb={1}>
+          <Typography variant="body1" className={classes.textTitle}>
+            Project
+          </Typography>
+        </Box>
+        <Typography variant="body1">
+          <span className={classes.textTitle}>Owner:</span> {owner}
         </Typography>
-      </Box>
-      <Box pb={1}>
-        <Typography variant="body1" className={classes.textTitle}>
-          Project
+        <Typography variant="body1">
+          <span className={classes.textTitle}>Shared to:</span> none
         </Typography>
-      </Box>
-      <Typography variant="body1">
-        <span className={classes.textTitle}>Owner:</span> {owner}
-      </Typography>
-      <Typography variant="body1">
-        <span className={classes.textTitle}>Shared to:</span> none
-      </Typography>
-      <div className={classes.sideIcons}>
-        <IconButton
-          className={classes.iconBtn}
-          onClick={() => handleBackLink()}
-        >
-          <ArrowBack fontSize="large" />
-        </IconButton>
-        <IconButton
-          className={classes.iconBtn}
-          onClick={e => handleMenuOpen(e)}
-        >
-          <MoreVert fontSize="large" />
-        </IconButton>
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={() => handleMenuClose()}
-          className={classes.menu}
-        >
-          <ModalWithButton
-            triggerBtn={{ type: 'menuEdit', text: 'Edit' }}
-            title="Edit project"
-            permanent={true}
-            closeMenu={handleMenuClose}
+        <div className={classes.sideIcons}>
+          <IconButton
+            className={classes.iconBtn}
+            onClick={() => handleBackLink()}
           >
-            <ProjectForm
-              name={name}
-              edit={true}
-              btnText="Save changes"
-              id={projectId}
+            <ArrowBack fontSize="large" />
+          </IconButton>
+          <IconButton
+            className={classes.iconBtn}
+            onClick={e => handleMenuOpen(e)}
+          >
+            <MoreVert fontSize="large" />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={() => handleMenuClose()}
+            className={classes.menu}
+          >
+            <MenuItem onClick={() => handleCreateTimer(handleMenuClose)}>
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <AddAlarm />
+                Add Timer
+              </span>
+            </MenuItem>
+            <ModalWithButton
+              triggerBtn={{ type: 'menuEdit', text: 'Edit' }}
+              title="Edit project"
+              permanent={true}
+              closeMenu={handleMenuClose}
+            >
+              <ProjectForm
+                name={name}
+                edit={true}
+                btnText="Save changes"
+                id={projectId}
+              />
+            </ModalWithButton>
+            <ComfirmationModal
+              triggerBtn={{ type: 'deleteMenuItem' }}
+              title={`Are you sure you want to delete ${name}?`}
+              handleMenuClose={handleMenuClose}
+              ref={ref}
+              handleDeleteProject={handleDeleteProject}
             />
-          </ModalWithButton>
-          <ComfirmationModal
-            triggerBtn={{ type: 'deleteMenuItem' }}
-            title={`Are you sure you want to delete ${name}?`}
-            handleMenuClose={handleMenuClose}
-            ref={ref}
-            handleDeleteProject={handleDeleteProject}
-          />
-        </Menu>
+          </Menu>
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 export default ProjectInfo;

@@ -19,6 +19,7 @@ import { deleteProjectById } from '../../../redux/actions/projectActions';
 import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
 import ModalWithButton from '../../Shared/Modals/ModalWithButton';
 import ProjectForm from '../../Shared/Modals/ProjectForm';
+import { deleteTimersByProjectId } from '../../../redux/actions/timerActions';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -50,6 +51,7 @@ const ProjectDetail = React.forwardRef(({ project }, ref) => {
   };
 
   const handleDeleteProject = handleCloseDialog => {
+    dispatch(deleteTimersByProjectId(project.id));
     dispatch(deleteProjectById(project.id, handleCloseDialog));
   };
 

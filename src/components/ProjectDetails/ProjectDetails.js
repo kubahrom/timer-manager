@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router';
 import { getProject } from '../../redux/actions/projectActions';
 import ProjectInfo from './ProjectInfo/ProjectInfo';
-import Timer from './Timer/Timer';
 import TimerTest from './Timer/TimerTest';
+import { v4 as uuidv4 } from 'uuid';
+import { createNewTimer } from '../../redux/actions/timerActions';
+import TimerList from './TimerList/TimerList';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -16,10 +18,25 @@ const useStyles = makeStyles(theme => ({
 const ProjectDetails = () => {
   const classes = useStyles();
   const { id } = useParams();
+  const { uid } = useSelector(state => state.user.user);
   const { projects, errorMessage } = useSelector(state => state.projects);
   const dispatch = useDispatch();
   const history = useHistory();
   const [currentProject, setCurrentProject] = useState({});
+
+  const handleCreateTimer = closeMenu => {
+    dispatch(
+      createNewTimer(
+        {
+          id: uuidv4(),
+          uid: uid,
+          projectId: currentProject.id,
+          isOpen: true,
+        },
+        closeMenu
+      )
+    );
+  };
 
   //Initial load of project, if not loaded
   useEffect(() => {
@@ -42,9 +59,9 @@ const ProjectDetails = () => {
         name={currentProject.name}
         ownerId={currentProject.owner}
         projectId={currentProject.id}
+        handleCreateTimer={handleCreateTimer}
       />
-
-      <Timer />
+      {currentProject.id && <TimerList projectId={currentProject.id} />}
       {currentProject.created && <TimerTest created={currentProject.created} />}
     </Container>
   );

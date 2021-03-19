@@ -1,6 +1,7 @@
 import {
   ADD_TIMER,
   DELETE_TIMER,
+  DELETE_TIMERS,
   SET_TIMERS,
   TIMER_ERROR,
   UPDATE_TIMER,
@@ -8,7 +9,7 @@ import {
 
 const initialState = {
   timers: [],
-  errorMessage: '',
+  notFound: '',
 };
 
 const TimerReducer = (state = initialState, action) => {
@@ -17,21 +18,30 @@ const TimerReducer = (state = initialState, action) => {
       return {
         ...state,
         timers: action.payload,
+        notFound: '',
       };
     case ADD_TIMER:
       return {
         ...state,
         timers: [...state.timers, action.payload],
+        notFound: '',
       };
     case TIMER_ERROR:
       return {
         ...state,
-        errorMessage: action.payload,
+        notFound: action.payload,
       };
     case DELETE_TIMER:
       return {
         ...state,
         timers: state.timers.filter(timer => timer.id !== action.payload),
+      };
+    case DELETE_TIMERS:
+      return {
+        ...state,
+        timers: state.timers.filter(
+          timer => timer.projectId !== action.payload
+        ),
       };
     case UPDATE_TIMER:
       return {

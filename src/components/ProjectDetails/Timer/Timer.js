@@ -29,11 +29,12 @@ const useStyles = makeStyles(theme => ({
   },
   btnDelete: {
     color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
   },
   actionWrapper: {
     paddingTop: 16,
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   btnMarginLeft: {
     marginLeft: 8,
@@ -64,19 +65,16 @@ const Timer = () => {
         </Grid>
       </Grid>
       <div className={classes.actionWrapper}>
-        <Button className={classes.btnDelete}>Delete timer</Button>
-        <div>
-          <Button variant="outlined" color="primary">
-            Add separate timer
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.btnMarginLeft}
-          >
-            Add
-          </Button>
-        </div>
+        <Button variant="outlined" className={classes.btnDelete}>
+          Delete
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.btnMarginLeft}
+        >
+          Add
+        </Button>
       </div>
     </Paper>
   );
