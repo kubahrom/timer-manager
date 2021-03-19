@@ -17,15 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 const ModalWithButton = React.forwardRef(
   (
-    {
-      triggerBtn,
-      title,
-      fullWidthBtn,
-      btnSize,
-      permanent,
-      closeMenu,
-      children,
-    },
+    { triggerBtn, title, fullWidthBtn, permanent, closeMenu, children },
     ref
   ) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -63,7 +55,7 @@ const ModalWithButton = React.forwardRef(
               variant="contained"
               fullWidth={fullWidthBtn}
               onClick={handleModalOpen}
-              size={btnSize}
+              size={triggerBtn.size}
             >
               {triggerBtn.text}
             </Button>

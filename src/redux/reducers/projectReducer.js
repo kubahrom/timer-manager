@@ -4,19 +4,27 @@ import {
   PROJECTS_ERROR,
   DELETE_PROJECT,
   UPDATE_PROJECT,
+  SET_PROJECT,
 } from '../actions/projectActions';
 
 const initialState = {
   projects: [],
   errorMessage: '',
+  allLoaded: false,
 };
 
 const projectReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_PROJECT:
+      return {
+        ...state,
+        projects: action.payload,
+      };
     case SET_PROJECTS:
       return {
         ...state,
         projects: action.payload,
+        allLoaded: true,
       };
     case ADD_PROJECT:
       return {

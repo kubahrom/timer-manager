@@ -2,6 +2,7 @@ import firebase from '../../firebase/firebase';
 
 //Actions
 export const SET_PROJECTS = 'set_projects';
+export const SET_PROJECT = 'set_project';
 export const PROJECTS_ERROR = 'projects_error';
 export const ADD_PROJECT = 'add_project';
 export const DELETE_PROJECT = 'delete_project';
@@ -9,6 +10,9 @@ export const UPDATE_PROJECT = 'update_project';
 
 //Set project action creator
 const setProjects = payload => ({ type: SET_PROJECTS, payload });
+
+//Set project action creator
+const setProject = payload => ({ type: SET_PROJECT, payload });
 
 //Add project action creator
 const addProject = payload => ({ type: ADD_PROJECT, payload });
@@ -53,7 +57,7 @@ export const getProject = projectId => async (dispatch, getState) => {
       .get();
     const data = await res.docs.map(doc => doc.data());
     if (data.length !== 0) {
-      dispatch(setProjects(data));
+      dispatch(setProject(data));
     } else {
       dispatch(projectError('not-found'));
     }

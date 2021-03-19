@@ -8,13 +8,15 @@ import ProjectDetail from '../ProjectDetail/ProjectDetail';
 const ProjectList = () => {
   const dispatch = useDispatch();
   const { loggedIn } = useSelector(state => state.user);
-  const { projects, errorMessage } = useSelector(state => state.projects);
+  const { projects, errorMessage, allLoaded } = useSelector(
+    state => state.projects
+  );
 
   useEffect(() => {
-    if (loggedIn && errorMessage !== 'no-projects' && projects.length === 0) {
+    if (loggedIn && errorMessage !== 'no-projects' && allLoaded === false) {
       dispatch(getProjects());
     }
-  }, [loggedIn, dispatch, errorMessage, projects]);
+  }, [loggedIn, dispatch, errorMessage, allLoaded]);
   return (
     <>
       {projects.length === 0 ? (
