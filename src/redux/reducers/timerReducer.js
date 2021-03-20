@@ -47,7 +47,19 @@ const TimerReducer = (state = initialState, action) => {
     case UPDATE_TIMER:
       return {
         ...state,
-        //TODO
+        timers: state.timers.map(timer => {
+          if (timer.id === action.payload.id) {
+            const updatedTimer = { ...action.payload };
+            delete updatedTimer.id;
+            const objKeys = Object.keys(updatedTimer);
+            objKeys.map(
+              parameter => (timer[parameter] = updatedTimer[parameter])
+            );
+            return timer;
+          } else {
+            return timer;
+          }
+        }),
       };
     default:
       return state;

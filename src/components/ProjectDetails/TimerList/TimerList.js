@@ -10,10 +10,10 @@ const TimerList = ({ projectId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const test = timers.filter(timer => timer.projectId === projectId);
+    const loadedTimers = timers.filter(timer => timer.projectId === projectId);
     if (
-      (test.length === 0 && notFound !== projectId) ||
-      (test.length === 0 && notFound === '')
+      (loadedTimers.length === 0 && notFound !== projectId) ||
+      (loadedTimers.length === 0 && notFound === '')
     ) {
       dispatch(getTimers(projectId));
     } else if (notFound === projectId) {
@@ -32,6 +32,7 @@ const TimerList = ({ projectId }) => {
       );
     }
   }, [dispatch, projectId, timers, notFound]);
+
   return (
     <>
       {openTimers.map(openTimer => (

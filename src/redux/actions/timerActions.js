@@ -41,6 +41,7 @@ export const getTimers = projectId => async dispatch => {
   }
 };
 
+//Create new timer
 export const createNewTimer = (timer, closeMenu) => async dispatch => {
   try {
     const ref = firebase.firestore().collection('timers');
@@ -52,6 +53,7 @@ export const createNewTimer = (timer, closeMenu) => async dispatch => {
   }
 };
 
+//Delete timer by timer ID
 export const deleteTimerById = timerId => async dispatch => {
   try {
     const ref = firebase.firestore().collection('timers');
@@ -62,14 +64,13 @@ export const deleteTimerById = timerId => async dispatch => {
   }
 };
 
+//Update timer
 export const updateTimer = updatedTimer => async dispatch => {
   try {
     const ref = firebase.firestore().collection('timers');
-    await ref
-      .doc(updatedTimer.id)
-      .update
-      // TODO
-      ();
+    const updatedTimerSaveToUpdate = { ...updatedTimer };
+    delete updatedTimerSaveToUpdate.id;
+    await ref.doc(updatedTimer.id).update(updatedTimerSaveToUpdate);
     dispatch(updateTimerActionCreator(updatedTimer));
   } catch (err) {
     console.error(err);
@@ -88,9 +89,6 @@ export const deleteTimersByProjectId = projectId => async dispatch => {
         data.forEach(doc => batch.delete(doc.ref));
         return batch.commit();
       });
-    // const batch = firebase.batch()
-    // const batch = await res.forEach(doc => firebase.batch().delete(doc.ref));
-    // await batch.commit();
     await dispatch(deleteTimers(projectId));
   } catch (err) {
     console.error(err);

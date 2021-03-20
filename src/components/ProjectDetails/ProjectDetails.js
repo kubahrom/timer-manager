@@ -32,6 +32,10 @@ const ProjectDetails = () => {
           uid: uid,
           projectId: currentProject.id,
           isOpen: true,
+          start: 0,
+          tempStart: 0,
+          comment: '',
+          lastValue: 0,
         },
         closeMenu
       )
