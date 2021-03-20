@@ -1,10 +1,9 @@
-import { Container, makeStyles } from '@material-ui/core';
+import { CircularProgress, Container, makeStyles } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router';
 import { getProject } from '../../redux/actions/projectActions';
 import ProjectInfo from './ProjectInfo/ProjectInfo';
-import TimerTest from './Timer/TimerTest';
 import { v4 as uuidv4 } from 'uuid';
 import { createNewTimer } from '../../redux/actions/timerActions';
 import TimerList from './TimerList/TimerList';
@@ -12,6 +11,12 @@ import TimerList from './TimerList/TimerList';
 const useStyles = makeStyles(theme => ({
   container: {
     marginTop: 8,
+  },
+  loading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '80vh',
   },
 }));
 
@@ -54,20 +59,27 @@ const ProjectDetails = () => {
   }, [projects, errorMessage, dispatch, id, history, currentProject]);
 
   return (
-    <Container
-      maxWidth="md"
-      style={{ padding: 8 }}
-      className={classes.container}
-    >
-      <ProjectInfo
-        name={currentProject.name}
-        ownerId={currentProject.owner}
-        projectId={currentProject.id}
-        handleCreateTimer={handleCreateTimer}
-      />
-      {currentProject.id && <TimerList projectId={currentProject.id} />}
-      {currentProject.created && <TimerTest created={currentProject.created} />}
-    </Container>
+    <>
+      {Object.keys(currentProject).length === 0 ? (
+        <div className={classes.loading}>
+          <CircularProgress color="inherit" size={70} />
+        </div>
+      ) : (
+        <Container
+          maxWidth="md"
+          style={{ padding: 8 }}
+          className={classes.container}
+        >
+          <ProjectInfo
+            name={currentProject.name}
+            ownerId={currentProject.owner}
+            projectId={currentProject.id}
+            handleCreateTimer={handleCreateTimer}
+          />
+          {currentProject.id && <TimerList projectId={currentProject.id} />}
+        </Container>
+      )}
+    </>
   );
 };
 

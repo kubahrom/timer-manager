@@ -8,7 +8,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import styles from './styles/app.module.scss';
 import Theme from './themes/Theme';
 
 function App() {
@@ -23,8 +22,8 @@ function App() {
       <Theme>
         <CssBaseline>
           {isLoading ? (
-            <div className={styles.loader_wrapper}>
-              <CircularProgress color="inherit" />
+            <div className="loader_wrapper">
+              <CircularProgress color="inherit" size={70} />
             </div>
           ) : (
             <Layout />

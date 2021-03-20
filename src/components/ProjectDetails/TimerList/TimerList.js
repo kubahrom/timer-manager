@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTimers } from '../../../redux/actions/timerActions';
 import Timer from '../Timer/Timer';
+import TimerTable from '../TimerTable/TimerTable';
 
 const TimerList = ({ projectId }) => {
   const [openTimers, setOpenTimers] = useState([]);
@@ -38,12 +39,7 @@ const TimerList = ({ projectId }) => {
       {openTimers.map(openTimer => (
         <Timer key={openTimer.id} timer={openTimer} />
       ))}
-      Open timers
-      <br />
-      <pre>{JSON.stringify(openTimers, null, 2)}</pre>
-      Closed timers
-      <br />
-      <pre>{JSON.stringify(closedTimers, null, 2)}</pre>
+      <TimerTable timers={closedTimers} />
     </>
   );
 };

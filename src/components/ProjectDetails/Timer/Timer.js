@@ -6,7 +6,6 @@ import {
   makeStyles,
   Paper,
   TextField,
-  Typography,
 } from '@material-ui/core';
 import { Pause, PlayArrow, Stop } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
@@ -16,6 +15,7 @@ import {
 } from '../../../redux/actions/timerActions';
 import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
 import Counter from './Counter';
+import firebase from '../../../firebase/firebase';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -53,7 +53,6 @@ const Timer = ({ timer }) => {
   const [resetBtn, setResetBtn] = useState(true);
   const [differenceInSeconds, setDifferenceInSeconds] = useState(0);
   const [interv, setInterv] = useState();
-
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -83,7 +82,7 @@ const Timer = ({ timer }) => {
       dispatch(
         updateTimer({
           id: timer.id,
-          start: new Date(),
+          start: firebase.firestore.Timestamp.fromDate(new Date()),
           isRunning: true,
         })
       );
@@ -91,7 +90,7 @@ const Timer = ({ timer }) => {
       dispatch(
         updateTimer({
           id: timer.id,
-          tempStart: new Date(),
+          tempStart: firebase.firestore.Timestamp.fromDate(new Date()),
           isRunning: true,
         })
       );
@@ -128,12 +127,24 @@ const Timer = ({ timer }) => {
     );
   };
 
+  const handleAddTimer = () => {
+    dispatch(
+      updateTimer({
+        id: timer.id,
+        isRunning: false,
+        lastValue: differenceInSeconds,
+        isOpen: false,
+        comment,
+      })
+    );
+  };
   //TODO handleAddTimer -> isOpen: false
 
   const runTimer = () => {
     const dateNow = new Date();
-    const timerStart = timer.tempStart === 0 ? timer.start : timer.tempStart;
-    const difference = Math.floor((dateNow - timerStart) / 1000);
+    const timerStart =
+      timer.tempStart === 0 ? timer.start.toDate() : timer.tempStart.toDate();
+    const difference = Math.floor((dateNow - new Date(timerStart)) / 1000);
     setDifferenceInSeconds(difference + timer.lastValue);
   };
 
@@ -143,11 +154,16 @@ const Timer = ({ timer }) => {
   }, [timer]);
 
   useEffect(() => {
+    if (differenceInSeconds === 0) {
+      setResetBtn(false);
+    } else {
+      setResetBtn(true);
+    }
     if (timer.isRunning) {
       setPlayBtn(true);
       setPauseBtn(false);
-      setResetBtn(false);
       setInterv(setInterval(runTimer, 1000));
+      runTimer();
     }
     return () => {
       setInterv(clearInterval(interv));
@@ -182,7 +198,6 @@ const Timer = ({ timer }) => {
           </IconButton>
         </Grid>
         <Grid item md={3}>
-          <Typography variant="h3">00:00:00</Typography>
           <Counter timer={differenceInSeconds} />
         </Grid>
         <Grid item md={6}>
@@ -214,6 +229,7 @@ const Timer = ({ timer }) => {
             variant="contained"
             color="primary"
             className={classes.btnMarginLeft}
+            onClick={() => handleAddTimer()}
           >
             Add
           </Button>
