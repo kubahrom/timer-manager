@@ -22,6 +22,13 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     paddingBottom: 16,
   },
+  menuItem: {
+    display: 'flex',
+    alignItems: 'center',
+    '& svg': {
+      marginRight: 4,
+    },
+  },
   sideIcons: {
     position: 'absolute',
     right: 0,
@@ -115,10 +122,9 @@ const ProjectInfo = React.forwardRef(
             keepMounted
             open={Boolean(anchorEl)}
             onClose={() => handleMenuClose()}
-            className={classes.menu}
           >
             <MenuItem onClick={() => handleCreateTimer(handleMenuClose)}>
-              <span style={{ display: 'flex', alignItems: 'center' }}>
+              <span className={classes.menuItem}>
                 <AddAlarm />
                 Add Timer
               </span>

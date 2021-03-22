@@ -10,8 +10,9 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core';
-import { Edit, Settings } from '@material-ui/icons';
+import { Settings } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
+import EditTimerMenu from './EditTimerMenu';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -34,21 +35,45 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.action.active,
     },
   },
-  tableHeadCell: {
-    fontSize: '1rem',
-    fontWeight: 'bold',
+  tableHeadRow: {
+    '& th': {
+      fontSize: '1.1rem',
+      fontWeight: 'bold',
+      padding: 8,
+    },
   },
-  tableCell: {
-    width: 150,
+  tableRow: {
+    '& td': {
+      padding: 8,
+    },
+  },
+  tableCellDate: {
+    width: 120,
+  },
+  tableCellLength: {
+    width: 160,
+  },
+  tableCellName: {
+    width: 160,
   },
   tableCellEdit: {
     width: 20,
+  },
+  totalWrapper: {
+    paddingTop: 24,
+  },
+  totalTime: {
+    color: theme.palette.text.secondary,
+  },
+  test: {
+    padding: 8,
   },
 }));
 
 const TimerTable = ({ timers }) => {
   const { firstName, lastName } = useSelector(state => state.user.user);
   const classes = useStyles();
+  const totalTime = timers.reduce((acc, cur) => acc + cur.lastValue, 0);
 
   const getTimerLength = timeInSeconds => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -74,37 +99,39 @@ const TimerTable = ({ timers }) => {
       <TableContainer>
         <Table className={classes.table}>
           <TableHead>
-            <TableRow>
-              <TableCell className={classes.tableHeadCell}>Date</TableCell>
-              <TableCell className={classes.tableHeadCell}>Length</TableCell>
-              <TableCell className={classes.tableHeadCell}>From</TableCell>
-              <TableCell className={classes.tableHeadCell}>Comment</TableCell>
-              <TableCell className={classes.tableHeadCell}></TableCell>
+            <TableRow className={classes.tableHeadRow}>
+              <TableCell>Date</TableCell>
+              <TableCell>Length</TableCell>
+              <TableCell>From</TableCell>
+              <TableCell>Comment</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {timers.map(timer => (
-              <TableRow key={timer.id}>
-                <TableCell className={classes.tableCell}>
+              <TableRow key={timer.id} className={classes.tableRow}>
+                <TableCell className={classes.tableCellDate}>
                   {new Date(timer.start.toDate()).toLocaleDateString()}
                 </TableCell>
-                <TableCell className={classes.tableCell}>
+                <TableCell className={classes.tableCellLength}>
                   {getTimerLength(timer.lastValue)}
                 </TableCell>
-                <TableCell className={classes.tableCell}>
+                <TableCell className={classes.tableCellName}>
                   {firstName} {lastName}
                 </TableCell>
                 <TableCell>{timer.comment}</TableCell>
                 <TableCell className={classes.tableCellEdit}>
-                  <IconButton>
-                    <Edit />
-                  </IconButton>
+                  <EditTimerMenu timerId={timer.id} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Typography variant="h6" component="h3" className={classes.totalWrapper}>
+        <span className={classes.totalTime}>Total time: </span>
+        {getTimerLength(totalTime)}
+      </Typography>
     </Paper>
   );
 };

@@ -38,6 +38,9 @@ const useStyles = makeStyles(theme => ({
   menuItemCenter: {
     display: 'flex',
     justifyContent: 'center',
+    '& svg': {
+      marginRight: 4,
+    },
   },
   dropdownMenu: {
     marginTop: 14,

@@ -13,6 +13,13 @@ import { useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   closeModalBtn: { position: 'absolute', top: 8, right: 8 },
+  menuItem: {
+    display: 'flex',
+    alignItems: 'center',
+    '& svg': {
+      marginRight: 4,
+    },
+  },
 }));
 
 const ModalWithButton = React.forwardRef(
@@ -39,10 +46,7 @@ const ModalWithButton = React.forwardRef(
         case 'menuEdit':
           return (
             <MenuItem ref={ref}>
-              <span
-                style={{ display: 'flex', alignItems: 'center' }}
-                onClick={handleModalOpen}
-              >
+              <span className={classes.menuItem} onClick={handleModalOpen}>
                 <Edit />
                 {triggerBtn.text}
               </span>

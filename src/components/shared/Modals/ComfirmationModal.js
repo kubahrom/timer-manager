@@ -14,6 +14,13 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.error.main,
     borderColor: theme.palette.error.main,
   },
+  menuItem: {
+    display: 'flex',
+    alignItems: 'center',
+    '& svg': {
+      marginRight: 4,
+    },
+  },
 }));
 
 const ComfirmationModal = React.forwardRef(
@@ -26,10 +33,7 @@ const ComfirmationModal = React.forwardRef(
         case 'deleteMenuItem':
           return (
             <MenuItem ref={ref}>
-              <span
-                style={{ display: 'flex', alignItems: 'center' }}
-                onClick={handleModalOpen}
-              >
+              <span className={classes.menuItem} onClick={handleModalOpen}>
                 <Delete />
                 Delete
               </span>
