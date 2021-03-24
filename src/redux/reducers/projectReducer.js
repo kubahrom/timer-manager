@@ -29,7 +29,7 @@ const projectReducer = (state = initialState, action) => {
     case ADD_PROJECT:
       return {
         ...state,
-        projects: [...state.projects, action.payload],
+        projects: [action.payload, ...state.projects],
       };
     case PROJECTS_ERROR:
       return {

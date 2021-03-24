@@ -32,7 +32,11 @@ const NoProjects = () => {
         Create new project to time your work.
       </Typography>
       <ModalWithButton
-        triggerBtn={{ text: 'Add new project', size: 'large' }}
+        triggerBtn={{
+          text: 'Add new project',
+          size: 'large',
+          variant: 'contained',
+        }}
         title="Add a new project"
       >
         <ProjectForm btnText="Add new project" />

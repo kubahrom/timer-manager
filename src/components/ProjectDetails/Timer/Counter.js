@@ -1,10 +1,19 @@
-import { Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+
+const useStyles = makeStyles(theme => ({
+  text: {
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '3.6rem',
+    },
+  },
+}));
 
 const Counter = ({ timer }) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const classes = useStyles();
 
   const handleNull = number => {
     return number <= 9 ? '0' + number : number;
@@ -21,7 +30,7 @@ const Counter = ({ timer }) => {
   }, [timer]);
 
   return (
-    <Typography variant="h3">
+    <Typography variant="h3" className={classes.text}>
       {handleNull(hours)}:{handleNull(minutes)}:{handleNull(seconds)}
     </Typography>
   );

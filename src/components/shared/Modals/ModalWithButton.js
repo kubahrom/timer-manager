@@ -56,7 +56,7 @@ const ModalWithButton = React.forwardRef(
           return (
             <Button
               color="primary"
-              variant="contained"
+              variant={triggerBtn.variant}
               fullWidth={fullWidthBtn}
               onClick={handleModalOpen}
               size={triggerBtn.size}

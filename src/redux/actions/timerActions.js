@@ -29,7 +29,10 @@ const updateTimerActionCreator = payload => ({ type: UPDATE_TIMER, payload });
 export const getTimers = projectId => async dispatch => {
   try {
     const ref = firebase.firestore().collection('timers');
-    const res = await ref.where('projectId', '==', projectId).get();
+    const res = await ref
+      .where('projectId', '==', projectId)
+      .orderBy('start', 'desc')
+      .get();
     const data = await res.docs.map(doc => doc.data());
     if (data.length !== 0) {
       dispatch(setTimers(data));

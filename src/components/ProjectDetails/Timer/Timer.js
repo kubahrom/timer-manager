@@ -16,12 +16,23 @@ import {
 import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
 import Counter from './Counter';
 import firebase from '../../../firebase/firebase';
+import { motion } from 'framer-motion';
 
 const useStyles = makeStyles(theme => ({
   paper: {
     borderRadius: 20,
     padding: 24,
     marginBottom: 16,
+  },
+  btnsWrapper: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'center',
+      marginBottom: 16,
+    },
+    [theme.breakpoints.only('xs')]: {
+      justifyContent: 'space-around',
+    },
   },
   btnPlay: {
     backgroundColor: theme.palette.primary.main,
@@ -35,6 +46,14 @@ const useStyles = makeStyles(theme => ({
     '&:disabled': {
       backgroundColor: theme.palette.action.disabledBackground,
     },
+    [theme.breakpoints.only('sm')]: {
+      marginRight: 24,
+      marginLeft: 24,
+      padding: 14,
+    },
+    [theme.breakpoints.only('xs')]: {
+      padding: 14,
+    },
   },
   actionWrapper: {
     paddingTop: 16,
@@ -43,6 +62,14 @@ const useStyles = makeStyles(theme => ({
   },
   btnMarginLeft: {
     marginLeft: 8,
+  },
+  counterWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.only('xs')]: {
+      justifyContent: 'center',
+      padding: 16,
+    },
   },
 }));
 
@@ -55,6 +82,15 @@ const Timer = ({ timer }) => {
   const [interv, setInterv] = useState();
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  const timerDetailVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  };
 
   const handleCommentChange = e => {
     setComment(e.target.value);
@@ -78,23 +114,14 @@ const Timer = ({ timer }) => {
     setPauseBtn(false);
     setResetBtn(false);
     setInterv(setInterval(runTimer, 1000));
-    if (timer.start === 0) {
-      dispatch(
-        updateTimer({
-          id: timer.id,
-          start: firebase.firestore.Timestamp.fromDate(new Date()),
-          isRunning: true,
-        })
-      );
-    } else {
-      dispatch(
-        updateTimer({
-          id: timer.id,
-          tempStart: firebase.firestore.Timestamp.fromDate(new Date()),
-          isRunning: true,
-        })
-      );
-    }
+    const timerDate = timer.start === 0 ? 'start' : 'tempStart';
+    dispatch(
+      updateTimer({
+        id: timer.id,
+        [timerDate]: firebase.firestore.Timestamp.fromDate(new Date()),
+        isRunning: true,
+      })
+    );
   };
 
   const handlePauseTimer = () => {
@@ -111,11 +138,11 @@ const Timer = ({ timer }) => {
   };
 
   const handleResetTimer = () => {
+    setInterv(clearInterval(interv));
+    setDifferenceInSeconds(0);
     setResetBtn(true);
     setPlayBtn(false);
     setPauseBtn(true);
-    setInterv(clearInterval(interv));
-    setDifferenceInSeconds(0);
     dispatch(
       updateTimer({
         id: timer.id,
@@ -138,7 +165,6 @@ const Timer = ({ timer }) => {
       })
     );
   };
-  //TODO handleAddTimer -> isOpen: false
 
   const runTimer = () => {
     const dateNow = new Date();
@@ -148,13 +174,12 @@ const Timer = ({ timer }) => {
     setDifferenceInSeconds(difference + timer.lastValue);
   };
 
+  useEffect(() => {}, [timer]);
+
   useEffect(() => {
     setComment(timer.comment);
     setDifferenceInSeconds(timer.lastValue);
-  }, [timer]);
-
-  useEffect(() => {
-    if (differenceInSeconds === 0) {
+    if (timer.lastValue !== 0 || timer.isRunning === true) {
       setResetBtn(false);
     } else {
       setResetBtn(true);
@@ -172,9 +197,14 @@ const Timer = ({ timer }) => {
   }, []);
 
   return (
-    <Paper elevation={4} className={classes.paper}>
+    <Paper
+      elevation={4}
+      className={classes.paper}
+      component={motion.div}
+      variants={timerDetailVariants}
+    >
       <Grid container>
-        <Grid item md={3}>
+        <Grid item xs={12} sm={7} md={3} className={classes.btnsWrapper}>
           <IconButton
             className={classes.btnPlay}
             disabled={playBtn}
@@ -197,10 +227,10 @@ const Timer = ({ timer }) => {
             <Stop />
           </IconButton>
         </Grid>
-        <Grid item md={3}>
+        <Grid item xs={12} sm={5} md={3} className={classes.counterWrapper}>
           <Counter timer={differenceInSeconds} />
         </Grid>
-        <Grid item md={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <TextField
             label="Comment"
             fullWidth

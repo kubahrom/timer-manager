@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     paddingLeft: 8,
-    paddingRight: 16,
+    paddingRight: 8,
   },
   settings: {
     color: theme.palette.action.disabled,

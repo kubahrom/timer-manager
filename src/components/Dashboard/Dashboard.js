@@ -91,7 +91,7 @@ const Dashboard = () => {
           </Grid>
           <Grid item sm={6} md={3} className={classes.gridItem}>
             <ModalWithButton
-              triggerBtn={{ text: 'Add new project' }}
+              triggerBtn={{ text: 'Add new project', variant: 'outlined' }}
               title="Add a new project"
               fullWidthBtn={true}
               permanent={true}

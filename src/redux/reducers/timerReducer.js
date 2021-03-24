@@ -23,7 +23,7 @@ const TimerReducer = (state = initialState, action) => {
     case ADD_TIMER:
       return {
         ...state,
-        timers: [...state.timers, action.payload],
+        timers: [action.payload, ...state.timers],
         notFound: '',
       };
     case TIMER_ERROR:
