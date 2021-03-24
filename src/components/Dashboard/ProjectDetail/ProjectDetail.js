@@ -29,6 +29,11 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     paddingLeft: 8,
   },
+  cardContent: {
+    padding: 0,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
   cardActions: {
     justifyContent: 'flex-end',
     padding: 24,
@@ -133,7 +138,7 @@ const ProjectDetail = React.forwardRef(({ project }, ref) => {
             action={handleDeleteProject}
           />
         </Menu>
-        <CardContent>
+        <CardContent className={classes.cardContent}>
           <Typography variant="body1" className={classes.chipWrapper}>
             <span className={classes.textTitle}>Owner: </span>
             <Chip

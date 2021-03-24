@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/actions/userActions';
 import validator from 'validator';
 import LoginForm from './LoginForm/LoginForm';
+import { motion } from 'framer-motion';
 
 const Login = () => {
   //User inputs
@@ -11,6 +12,15 @@ const Login = () => {
   const [rememberMe, setRemeberMe] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const dispatch = useDispatch();
+
+  const pageLoadVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.3 } },
+    exit: {
+      y: -20,
+      opacity: 0,
+    },
+  };
 
   const {
     errorMessage: { invalidLogin },
@@ -58,7 +68,12 @@ const Login = () => {
   };
 
   return (
-    <>
+    <motion.div
+      variants={pageLoadVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <LoginForm
         email={email}
         password={password}
@@ -72,7 +87,7 @@ const Login = () => {
         validateEmailOnChange={validateEmailOnChange}
       />
       <button onClick={handleLogin}>Login</button>
-    </>
+    </motion.div>
   );
 };
 

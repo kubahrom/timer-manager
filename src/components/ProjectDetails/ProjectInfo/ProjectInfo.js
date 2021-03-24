@@ -63,12 +63,9 @@ const ProjectInfo = React.forwardRef(
       setAnchorEl(null);
     };
 
-    const handleDeleteProject = async handleCloseDialog => {
+    const handleDeleteProject = async () => {
       await dispatch(deleteTimersByProjectId(projectId));
-      await dispatch(
-        deleteProjectById(projectId, handleCloseDialog, handleBackLink)
-      );
-      await handleBackLink();
+      await dispatch(deleteProjectById(projectId, handleBackLink));
     };
 
     useEffect(() => {

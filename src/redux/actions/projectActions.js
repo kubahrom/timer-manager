@@ -89,11 +89,12 @@ export const createNewProject = (project, closeModal) => async dispatch => {
 };
 
 //Delete Project
-export const deleteProjectById = projectId => async dispatch => {
+export const deleteProjectById = (projectId, redirect) => async dispatch => {
   try {
     const ref = firebase.firestore().collection('projects');
     await ref.doc(projectId).delete();
     await dispatch(deleteProject(projectId));
+    redirect && redirect();
   } catch (err) {
     console.error(err);
   }

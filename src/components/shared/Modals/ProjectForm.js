@@ -66,11 +66,12 @@ const ProjectForm = ({ closeModal, btnText, name, edit, id }) => {
       <TextField
         name="name"
         fullWidth
+        autoFocus
         type="text"
         label="Project name"
         variant="outlined"
         value={projectName}
-        onChange={handleNameChange}
+        onChange={e => handleNameChange(e)}
         error={nameError}
         helperText={nameError && 'Name of the project is required'}
         InputProps={{

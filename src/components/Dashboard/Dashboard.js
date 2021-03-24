@@ -13,6 +13,7 @@ import SearchInput from '../Shared/Inputs/SearchInput';
 import ModalWithButton from '../Shared/Modals/ModalWithButton';
 import ProjectForm from '../Shared/Modals/ProjectForm';
 import ProjectList from './ProjectList/ProjectList';
+import { motion } from 'framer-motion';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,11 +44,26 @@ const Dashboard = () => {
   const [mineProjectCheckbox, setMineProjectCheckBox] = useState(true);
   const [sharedProjectCheckbox, setSharedProjectCheckBox] = useState(false);
   const classes = useStyles();
+
+  const pageLoadVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.3 } },
+    exit: {
+      y: -20,
+      opacity: 0,
+    },
+  };
+
   return (
     <Container
       maxWidth="md"
       style={{ padding: 8 }}
       className={classes.container}
+      component={motion.div}
+      variants={pageLoadVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
     >
       <Box pb={2} pt={2}>
         <Typography variant="h3" component="h1">

@@ -7,6 +7,7 @@ import ProjectInfo from './ProjectInfo/ProjectInfo';
 import { v4 as uuidv4 } from 'uuid';
 import { createNewTimer } from '../../redux/actions/timerActions';
 import TimerList from './TimerList/TimerList';
+import { motion } from 'framer-motion';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -28,6 +29,15 @@ const ProjectDetails = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [currentProject, setCurrentProject] = useState({});
+
+  const pageLoadVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.3 } },
+    exit: {
+      y: -20,
+      opacity: 0,
+    },
+  };
 
   const handleCreateTimer = closeMenu => {
     dispatch(
@@ -58,6 +68,10 @@ const ProjectDetails = () => {
     }
   }, [projects, errorMessage, dispatch, id, history, currentProject]);
 
+  if (currentProject === undefined) {
+    return <CircularProgress color="secondary" size={70} />;
+  }
+
   return (
     <>
       {Object.keys(currentProject).length === 0 ? (
@@ -69,6 +83,11 @@ const ProjectDetails = () => {
           maxWidth="md"
           style={{ padding: 8 }}
           className={classes.container}
+          component={motion.div}
+          variants={pageLoadVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
         >
           <ProjectInfo
             name={currentProject.name}

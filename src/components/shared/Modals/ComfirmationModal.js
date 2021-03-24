@@ -93,7 +93,7 @@ const ComfirmationModal = React.forwardRef(
               disabled={btnDeleteDisabled}
               autoFocus
             >
-              Delete project
+              {triggerBtn.text || 'Delete project'}
             </Button>
           </DialogActions>
         </Dialog>

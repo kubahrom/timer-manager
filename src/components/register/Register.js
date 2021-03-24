@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import validator from 'validator';
 import { signupUser, userError } from '../../redux/actions/userActions';
 import RegisterForm from './RegisterForm/RegisterForm';
+import { motion } from 'framer-motion';
 
 const Register = () => {
   const [firstName, setFirstName] = useState('');
@@ -15,6 +16,15 @@ const Register = () => {
   const [errorPassword, setErrorPassword] = useState(false);
   const [policyAgreement, setPolicyAgreement] = useState(false);
   const dispatch = useDispatch();
+
+  const pageLoadVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.3 } },
+    exit: {
+      y: -20,
+      opacity: 0,
+    },
+  };
 
   const {
     errorMessage: { invalidRegister },
@@ -129,7 +139,12 @@ const Register = () => {
   };
 
   return (
-    <>
+    <motion.div
+      variants={pageLoadVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <RegisterForm
         firstName={firstName}
         errorFirstName={errorFirstName}
@@ -153,7 +168,7 @@ const Register = () => {
         invalidRegister={invalidRegister}
       />
       <button onClick={handleSignup}>Register</button>
-    </>
+    </motion.div>
   );
 };
 
