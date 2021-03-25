@@ -43,7 +43,16 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = () => {
   const [mineProjectCheckbox, setMineProjectCheckBox] = useState(true);
   const [sharedProjectCheckbox, setSharedProjectCheckBox] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const classes = useStyles();
+
+  const clearSearchQuery = () => {
+    setSearchQuery('');
+  };
+
+  const handleChangeSearchQuery = e => {
+    setSearchQuery(e.target.value);
+  };
 
   const pageLoadVariants = {
     hidden: { y: -20, opacity: 0 },
@@ -73,7 +82,11 @@ const Dashboard = () => {
       <Paper elevation={3} className={classes.paper}>
         <Grid container className={classes.gridContainer}>
           <Grid item sm={12} md={5} className={classes.gridItem}>
-            <SearchInput />
+            <SearchInput
+              searchQuery={searchQuery}
+              clearSearchQuery={clearSearchQuery}
+              handleChangeSearchQuery={handleChangeSearchQuery}
+            />
           </Grid>
           <Grid item sm={6} md={4} className={classes.gridItem}>
             <div className={classes.checkboxWrapper}>
@@ -117,7 +130,10 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Paper>
-      <ProjectList />
+      <ProjectList
+        searchQuery={searchQuery}
+        clearSearchQuery={clearSearchQuery}
+      />
     </Container>
   );
 };

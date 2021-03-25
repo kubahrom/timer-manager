@@ -6,7 +6,11 @@ import {
 } from '@material-ui/core';
 import { Close, Search } from '@material-ui/icons';
 
-const SearchInput = () => {
+const SearchInput = ({
+  searchQuery,
+  handleChangeSearchQuery,
+  clearSearchQuery,
+}) => {
   return (
     <FormControl hiddenLabel={true} fullWidth={true}>
       <FilledInput
@@ -16,17 +20,21 @@ const SearchInput = () => {
         color="primary"
         placeholder="Search project"
         disableUnderline={true}
+        value={searchQuery}
+        onChange={e => handleChangeSearchQuery(e)}
         startAdornment={
           <InputAdornment position="start">
             <Search />
           </InputAdornment>
         }
         endAdornment={
-          <InputAdornment position="end">
-            <IconButton>
-              <Close />
-            </IconButton>
-          </InputAdornment>
+          searchQuery !== '' && (
+            <InputAdornment position="end">
+              <IconButton onClick={() => clearSearchQuery()}>
+                <Close />
+              </IconButton>
+            </InputAdornment>
+          )
         }
       />
     </FormControl>
