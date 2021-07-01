@@ -5,6 +5,7 @@ import {
   SET_TIMERS,
   TIMER_ERROR,
   UPDATE_TIMER,
+  CLEAR_TIMERS,
 } from '../actions/timerActions';
 
 const initialState = {
@@ -61,6 +62,8 @@ const TimerReducer = (state = initialState, action) => {
           }
         }),
       };
+    case CLEAR_TIMERS:
+      return initialState;
     default:
       return state;
   }

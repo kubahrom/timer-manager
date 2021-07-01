@@ -3,6 +3,7 @@ import firebase from '../../firebase/firebase';
 //Actions
 export const SET_PROJECTS = 'set_projects';
 export const SET_PROJECT = 'set_project';
+export const CLEAR_PROJECTS = 'clear_project';
 export const PROJECTS_ERROR = 'projects_error';
 export const ADD_PROJECT = 'add_project';
 export const DELETE_PROJECT = 'delete_project';
@@ -13,6 +14,9 @@ const setProjects = payload => ({ type: SET_PROJECTS, payload });
 
 //Set project action creator
 const setProject = payload => ({ type: SET_PROJECT, payload });
+
+//Clear projects action creator
+export const clearProjects = () => ({ type: CLEAR_PROJECTS });
 
 //Add project action creator
 const addProject = payload => ({ type: ADD_PROJECT, payload });

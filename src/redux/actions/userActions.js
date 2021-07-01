@@ -1,4 +1,6 @@
 import firebase from '../../firebase/firebase';
+import { clearProjects } from './projectActions';
+import { clearTimers } from './timerActions';
 
 //Actions
 export const SET_USER = 'set_user';
@@ -120,6 +122,8 @@ export const logoutUserFromApp = () => async dispatch => {
   try {
     await firebase.auth().signOut();
     await dispatch(logoutUser());
+    await dispatch(clearProjects());
+    await dispatch(clearTimers());
   } catch (err) {
     console.error(err);
   }

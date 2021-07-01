@@ -42,6 +42,7 @@ const PasswordInput = ({
         id="outlined-adornment-password"
         type={showPassword ? 'text' : 'password'}
         value={password}
+        label="Password*"
         onChange={
           setPassword ? e => handleChange(e) : e => validatePasswordOnChange(e)
         }

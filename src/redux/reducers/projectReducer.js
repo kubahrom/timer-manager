@@ -1,6 +1,7 @@
 import {
   ADD_PROJECT,
   SET_PROJECTS,
+  CLEAR_PROJECTS,
   PROJECTS_ERROR,
   DELETE_PROJECT,
   UPDATE_PROJECT,
@@ -26,6 +27,8 @@ const projectReducer = (state = initialState, action) => {
         projects: action.payload,
         allLoaded: true,
       };
+    case CLEAR_PROJECTS:
+      return initialState;
     case ADD_PROJECT:
       return {
         ...state,

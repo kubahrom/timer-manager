@@ -7,6 +7,7 @@ export const DELETE_TIMER = 'delete_timer';
 export const DELETE_TIMERS = 'delete_timers';
 export const UPDATE_TIMER = 'update_timer';
 export const TIMER_ERROR = 'timer_error';
+export const CLEAR_TIMERS = 'clear_timers';
 
 //Set timer action creator
 const setTimers = payload => ({ type: SET_TIMERS, payload });
@@ -22,6 +23,9 @@ const deleteTimer = payload => ({ type: DELETE_TIMER, payload });
 
 //Delete timers action creator
 const deleteTimers = payload => ({ type: DELETE_TIMERS, payload });
+
+//Delete timers action creator
+export const clearTimers = () => ({ type: CLEAR_TIMERS });
 
 //Update timer action creator
 const updateTimerActionCreator = payload => ({ type: UPDATE_TIMER, payload });

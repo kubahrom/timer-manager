@@ -40,7 +40,7 @@ const ProjectList = ({ searchQuery, clearSearchQuery }) => {
   return (
     <>
       {projects.length === 0 && <NoProjects />}
-      {filteredProjects.length === 0 ? (
+      {filteredProjects.length === 0 && projects.length !== 0 ? (
         <NoFilteredProjects clearSearchQuery={clearSearchQuery} />
       ) : (
         <Grid
