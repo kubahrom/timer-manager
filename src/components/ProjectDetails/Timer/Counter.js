@@ -1,11 +1,15 @@
 import { makeStyles, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   text: {
     [theme.breakpoints.only('xs')]: {
       fontSize: '3.6rem',
     },
+  },
+  smallerText: {
+    fontSize: '2.5rem',
   },
 }));
 
@@ -30,7 +34,11 @@ const Counter = ({ timer }) => {
   }, [timer]);
 
   return (
-    <Typography variant="h3" className={classes.text}>
+    <Typography
+      variant="h3"
+      className={classes.text}
+      className={clsx(classes.text, hours > 999 ? classes.smallerText : '')}
+    >
       {handleNull(hours)}:{handleNull(minutes)}:{handleNull(seconds)}
     </Typography>
   );
