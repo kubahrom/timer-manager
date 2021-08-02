@@ -2,12 +2,13 @@ import { useSelector } from 'react-redux';
 import {
   unstable_createMuiStrictModeTheme as createMuiTheme,
   ThemeProvider,
+  responsiveFontSizes,
 } from '@material-ui/core';
 
 const Theme = ({ children }) => {
   const darkTheme = useSelector(state => state.theme.darkTheme);
 
-  const theme = createMuiTheme({
+  let theme = createMuiTheme({
     palette: {
       type: darkTheme ? 'dark' : 'light',
       primary: {
@@ -22,13 +23,7 @@ const Theme = ({ children }) => {
     },
   });
 
-  theme.typography.h1 = {
-    ...theme.typography.h1,
-    fontSize: '3.75rem',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '2.4rem',
-    },
-  };
+  theme = responsiveFontSizes(theme);
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

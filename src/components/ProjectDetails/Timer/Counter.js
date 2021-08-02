@@ -36,7 +36,6 @@ const Counter = ({ timer }) => {
   return (
     <Typography
       variant="h3"
-      className={classes.text}
       className={clsx(classes.text, hours > 999 ? classes.smallerText : '')}
     >
       {handleNull(hours)}:{handleNull(minutes)}:{handleNull(seconds)}

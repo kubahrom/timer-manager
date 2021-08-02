@@ -12,41 +12,53 @@ import MainMenu from './MainMenu/MainMenu';
 import { useState } from 'react';
 import Sidebar from './Sidebar/Sidebar';
 import { useSelector } from 'react-redux';
+import { Timer } from '@material-ui/icons';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 8,
-  },
-  appTitle: {
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-  },
-  hide: {
-    display: 'none',
-  },
-  mainMenu: {
-    flexGrow: 1,
-    paddingRight: 8,
-  },
-}));
+const useStyles = makeStyles(
+  theme => ({
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    appBarShift: {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    menuButton: {
+      marginRight: 8,
+    },
+    appTitle: {
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    hide: {
+      display: 'none',
+    },
+    mainMenu: {
+      flexGrow: 1,
+      paddingRight: 8,
+    },
+    icon: {
+      marginRight: theme.spacing(1),
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+      },
+    },
+  }),
+  { index: 1 }
+);
 
 const Navbar = () => {
   const classes = useStyles();
@@ -85,6 +97,7 @@ const Navbar = () => {
           )}
           <Typography variant="h6" className={classes.mainMenu}>
             <Link to="/" className={classes.appTitle}>
+              <Timer className={classes.icon} />
               Timer Manager
             </Link>
           </Typography>
