@@ -52,7 +52,7 @@ const ProjectInfo = React.forwardRef(
     const dispatch = useDispatch();
 
     const handleBackLink = () => {
-      history.push('/dashboard');
+      history.push('/');
     };
 
     const handleMenuOpen = e => {
