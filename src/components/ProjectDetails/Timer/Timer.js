@@ -71,6 +71,10 @@ const useStyles = makeStyles(theme => ({
       padding: 16,
     },
   },
+  lightBtn: {
+    color: theme.palette.primary.light,
+    borderColor: theme.palette.primary.light,
+  },
 }));
 
 const Timer = ({ timer }) => {
@@ -252,6 +256,7 @@ const Timer = ({ timer }) => {
             variant="outlined"
             color="primary"
             onClick={() => handleSaveTimer()}
+            className={classes.lightBtn}
           >
             Save timer
           </Button>

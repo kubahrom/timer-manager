@@ -11,7 +11,8 @@ const Theme = ({ children }) => {
     palette: {
       type: darkTheme ? 'dark' : 'light',
       primary: {
-        main: '#448aff',
+        main: '#009688',
+        // light: '#b388ff',
       },
     },
     typography: {

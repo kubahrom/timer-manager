@@ -20,6 +20,10 @@ const useStyles = makeStyles(theme => ({
       marginRight: 4,
     },
   },
+  lightBtn: {
+    color: theme.palette.primary.light,
+    borderColor: theme.palette.primary.light,
+  },
 }));
 
 const ModalWithButton = React.forwardRef(
@@ -60,6 +64,7 @@ const ModalWithButton = React.forwardRef(
               fullWidth={fullWidthBtn}
               onClick={handleModalOpen}
               size={triggerBtn.size}
+              className={classes.lightBtn}
             >
               {triggerBtn.text}
             </Button>
