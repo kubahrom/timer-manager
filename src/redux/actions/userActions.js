@@ -33,7 +33,6 @@ export const resetUserError = () => ({ type: RESET_USER_ERROR });
 export const setInitialUser = () => dispatch => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      //TODO______________________________________________________
       firebase
         .firestore()
         .collection('users')

@@ -13,8 +13,13 @@ const reducer = combineReducers({
   timers: timerReducer,
 });
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
-//TODO: disable devtools
-// const store = createStore(reducer, applyMiddleware(thunk));
+console.log(process.env.NODE_ENV);
+
+const store = createStore(
+  reducer,
+  process.env.NODE_ENV !== 'production'
+    ? composeWithDevTools(applyMiddleware(thunk))
+    : applyMiddleware(thunk)
+);
 
 export default store;
