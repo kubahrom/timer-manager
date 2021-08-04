@@ -13,7 +13,6 @@ const Theme = ({ children }) => {
       type: darkTheme ? 'dark' : 'light',
       primary: {
         main: '#009688',
-        // light: '#b388ff',
       },
     },
     typography: {

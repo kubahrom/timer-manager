@@ -7,10 +7,24 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
+  makeStyles,
   TextField,
   Typography,
 } from '@material-ui/core';
 import PasswordInput from '../../Shared/Inputs/PasswordInput';
+
+const useStyles = makeStyles(
+  theme => ({
+    demoAccountWrapper: {
+      textAlign: 'center',
+    },
+    demoAccountBtn: {
+      color: theme.palette.primary.light,
+      borderColor: theme.palette.primary.light,
+    },
+  }),
+  { index: 1 }
+);
 
 const LoginForm = ({
   handleSubmit,
@@ -23,7 +37,10 @@ const LoginForm = ({
   errorEmail,
   validateEmail,
   validateEmailOnChange,
+  demoAccountLogin,
 }) => {
+  const classes = useStyles();
+
   return (
     <main className="form">
       <Grid container justify="center" className="form_wrapper">
@@ -101,12 +118,22 @@ const LoginForm = ({
                         color="primary"
                         variant="contained"
                         type="submit"
-                        fullWidth={true}
+                        fullWidth
                         size="large"
                       >
                         Sign in
                       </Button>
                     </Grid>
+                    <div className={classes.demoAccountWrapper}>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        className={classes.demoAccountBtn}
+                        onClick={demoAccountLogin}
+                      >
+                        Sign in with demo account
+                      </Button>
+                    </div>
                     <Grid item>
                       <Box pb={5}>
                         <Grid container justify="space-between">

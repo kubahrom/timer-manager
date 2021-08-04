@@ -12,11 +12,15 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.action.disabledBackground,
   },
   text: {
-    color: theme.palette.action.disabled,
+    color: theme.palette.text.secondary,
     paddingLeft: 32,
     paddingRight: 32,
     paddingBottom: 16,
     textAlign: 'center',
+  },
+  btn: {
+    color: theme.palette.primary.light,
+    borderColor: theme.palette.primary.light,
   },
 }));
 
@@ -32,6 +36,7 @@ const NoFilteredProjects = ({ clearSearchQuery }) => {
         size="large"
         color="primary"
         onClick={() => clearSearchQuery()}
+        className={classes.btn}
       >
         Clear filter
       </Button>

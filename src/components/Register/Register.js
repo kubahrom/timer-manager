@@ -30,16 +30,6 @@ const Register = () => {
     errorMessage: { invalidRegister },
   } = useSelector(state => state.user);
 
-  const user = {
-    email: 'testemail@email.cz',
-    password: 'Test123456',
-    firstName: 'John',
-    lastName: 'Doee',
-  };
-  const handleSignup = () => {
-    dispatch(signupUser(user));
-  };
-
   const handleSubmit = e => {
     e.preventDefault();
     if (!policyAgreement) {
@@ -167,7 +157,6 @@ const Register = () => {
         handleSubmit={handleSubmit}
         invalidRegister={invalidRegister}
       />
-      <button onClick={handleSignup}>Register</button>
     </motion.div>
   );
 };

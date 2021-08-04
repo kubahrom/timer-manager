@@ -56,13 +56,11 @@ const Login = () => {
   };
 
   //Testlogin
-  const handleLogin = () => {
+  const demoAccountLogin = () => {
     dispatch(
       loginUser({
-        email: 'testemail@email.cz',
-        password: 'Test123456',
-        firstName: 'John',
-        lastName: 'Doee',
+        email: process.env.REACT_APP_DEMO_ACCOUNT_EMAIL,
+        password: process.env.REACT_APP_DEMO_ACCOUNT_PASSWORD,
       })
     );
   };
@@ -85,8 +83,8 @@ const Login = () => {
         errorEmail={errorEmail}
         validateEmail={validateEmail}
         validateEmailOnChange={validateEmailOnChange}
+        demoAccountLogin={demoAccountLogin}
       />
-      <button onClick={handleLogin}>Login</button>
     </motion.div>
   );
 };
