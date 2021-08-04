@@ -8,7 +8,11 @@ import ProjectDetail from '../ProjectDetail/ProjectDetail';
 import { motion } from 'framer-motion';
 import NoFilteredProjects from '../NoFilteredProjects/NoFilteredProjects';
 
-const ProjectList = ({ searchQuery, clearSearchQuery }) => {
+const ProjectList = ({
+  searchQuery,
+  clearSearchQuery,
+  mineProjectCheckbox,
+}) => {
   const dispatch = useDispatch();
   const { loggedIn } = useSelector(state => state.user);
   const { projects, errorMessage, allLoaded } = useSelector(
@@ -32,11 +36,13 @@ const ProjectList = ({ searchQuery, clearSearchQuery }) => {
 
   useEffect(() => {
     setFilteredProjects(
-      projects.filter(project =>
-        project.name.toLowerCase().includes(searchQuery)
-      )
+      mineProjectCheckbox
+        ? projects.filter(project =>
+            project.name.toLowerCase().includes(searchQuery)
+          )
+        : []
     );
-  }, [projects, searchQuery]);
+  }, [projects, searchQuery, mineProjectCheckbox]);
   return (
     <>
       {projects.length === 0 && <NoProjects />}

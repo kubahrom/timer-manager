@@ -48,6 +48,7 @@ const Home = () => {
 
   const clearSearchQuery = () => {
     setSearchQuery('');
+    setMineProjectCheckBox(true);
   };
 
   const handleChangeSearchQuery = e => {
@@ -133,6 +134,7 @@ const Home = () => {
       <ProjectList
         searchQuery={searchQuery}
         clearSearchQuery={clearSearchQuery}
+        mineProjectCheckbox={mineProjectCheckbox}
       />
     </Container>
   );
