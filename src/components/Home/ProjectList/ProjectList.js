@@ -38,7 +38,7 @@ const ProjectList = ({
     setFilteredProjects(
       mineProjectCheckbox
         ? projects.filter(project =>
-            project.name.toLowerCase().includes(searchQuery)
+            project.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
         : []
     );

@@ -160,6 +160,7 @@ const Timer = ({ timer }) => {
   };
 
   const handleAddTimer = () => {
+    if (differenceInSeconds === 0) return;
     dispatch(
       updateTimer({
         id: timer.id,
@@ -279,6 +280,7 @@ const Timer = ({ timer }) => {
           <Button
             variant="contained"
             color="primary"
+            disabled={differenceInSeconds === 0}
             className={classes.btnMarginLeft}
             onClick={() => handleAddTimer()}
           >
