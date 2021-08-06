@@ -6,6 +6,7 @@ import {
   makeStyles,
   Paper,
   TextField,
+  Tooltip,
 } from '@material-ui/core';
 import { Pause, PlayArrow, Stop } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
@@ -209,27 +210,42 @@ const Timer = ({ timer }) => {
     >
       <Grid container>
         <Grid item xs={12} sm={7} md={3} className={classes.btnsWrapper}>
-          <IconButton
-            className={classes.btnPlay}
-            disabled={playBtn}
-            onClick={() => handleStartTimer()}
+          <Tooltip
+            placement="top"
+            title={
+              !playBtn ? (differenceInSeconds === 0 ? 'Start' : 'Resume') : ''
+            }
           >
-            <PlayArrow />
-          </IconButton>
-          <IconButton
-            className={classes.btnPlay}
-            disabled={pauseBtn}
-            onClick={() => handlePauseTimer()}
-          >
-            <Pause />
-          </IconButton>
-          <IconButton
-            className={classes.btnPlay}
-            disabled={resetBtn}
-            onClick={() => handleResetTimer()}
-          >
-            <Stop />
-          </IconButton>
+            <span>
+              <IconButton
+                className={classes.btnPlay}
+                disabled={playBtn}
+                onClick={() => handleStartTimer()}
+              >
+                <PlayArrow />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip placement="top" title={!pauseBtn ? 'Pause' : ''}>
+            <IconButton
+              className={classes.btnPlay}
+              disabled={pauseBtn}
+              onClick={() => handlePauseTimer()}
+            >
+              <Pause />
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="top" title={!resetBtn ? 'Reset' : ''}>
+            <span>
+              <IconButton
+                className={classes.btnPlay}
+                disabled={resetBtn}
+                onClick={() => handleResetTimer()}
+              >
+                <Stop />
+              </IconButton>
+            </span>
+          </Tooltip>
         </Grid>
         <Grid item xs={12} sm={5} md={3} className={classes.counterWrapper}>
           <Counter timer={differenceInSeconds} />

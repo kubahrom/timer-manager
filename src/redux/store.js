@@ -13,8 +13,6 @@ const reducer = combineReducers({
   timers: timerReducer,
 });
 
-console.log(process.env.NODE_ENV);
-
 const store = createStore(
   reducer,
   process.env.NODE_ENV !== 'production'

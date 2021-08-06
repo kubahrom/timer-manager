@@ -64,7 +64,9 @@ const ModalWithButton = React.forwardRef(
               fullWidth={fullWidthBtn}
               onClick={handleModalOpen}
               size={triggerBtn.size}
-              className={classes.lightBtn}
+              className={
+                triggerBtn.variant === 'outlined' ? classes.lightBtn : ''
+              }
             >
               {triggerBtn.text}
             </Button>
