@@ -40,10 +40,13 @@ const useStyles = makeStyles((theme) => ({
   tableRow: {
     "& td": {
       padding: 8,
+      [theme.breakpoints.down("sm")]: {
+        padding: 4,
+      },
     },
   },
   tableCellDate: {
-    width: 120,
+    width: 100,
   },
   tableCellLength: {
     width: 160,
@@ -51,8 +54,14 @@ const useStyles = makeStyles((theme) => ({
   tableCellName: {
     width: 160,
   },
+  tableCellType: {
+    width: 80,
+  },
   tableCellEdit: {
     width: 20,
+  },
+  tableCellComment: {
+    minWidth: 140,
   },
   totalWrapper: {
     paddingTop: 24,
@@ -113,8 +122,12 @@ const TimerTable = ({ timers }) => {
                 <TableCell className={classes.tableCellName}>
                   {firstName} {lastName}
                 </TableCell>
-                <TableCell>{timer.isManual ? "Manual" : "Timer"}</TableCell>
-                <TableCell>{timer.comment}</TableCell>
+                <TableCell className={classes.tableCellType}>
+                  {timer.isManual ? "Manual" : "Timer"}
+                </TableCell>
+                <TableCell className={classes.tableCellComment}>
+                  {timer.comment}
+                </TableCell>
                 <TableCell className={classes.tableCellEdit}>
                   <EditTimerMenu timerId={timer.id} />
                 </TableCell>
