@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTimers } from '../../../redux/actions/timerActions';
-import Timer from '../Timer/Timer';
-import TimerTable from '../TimerTable/TimerTable';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getTimers } from "../../../redux/actions/timerActions";
+import Timer from "../Timer/Timer";
+import TimerTable from "../TimerTable/TimerTable";
+import { motion } from "framer-motion";
+import ManualTimer from "../ManualTimer/ManualTimer";
 
 const TimerList = ({ projectId }) => {
   const [openTimers, setOpenTimers] = useState([]);
   const [closedTimers, setClosedTimers] = useState([]);
-  const { timers, notFound } = useSelector(state => state.timers);
+  const { timers, notFound } = useSelector((state) => state.timers);
   const dispatch = useDispatch();
 
   const timerListVariants = {
@@ -21,10 +22,12 @@ const TimerList = ({ projectId }) => {
   };
 
   useEffect(() => {
-    const loadedTimers = timers.filter(timer => timer.projectId === projectId);
+    const loadedTimers = timers.filter(
+      (timer) => timer.projectId === projectId
+    );
     if (
       (loadedTimers.length === 0 && notFound !== projectId) ||
-      (loadedTimers.length === 0 && notFound === '')
+      (loadedTimers.length === 0 && notFound === "")
     ) {
       dispatch(getTimers(projectId));
     } else if (notFound === projectId) {
@@ -33,12 +36,12 @@ const TimerList = ({ projectId }) => {
     } else {
       setOpenTimers(
         timers.filter(
-          timer => timer.isOpen === true && timer.projectId === projectId
+          (timer) => timer.isOpen === true && timer.projectId === projectId
         )
       );
       setClosedTimers(
         timers.filter(
-          timer => timer.isOpen === false && timer.projectId === projectId
+          (timer) => timer.isOpen === false && timer.projectId === projectId
         )
       );
     }
@@ -53,10 +56,13 @@ const TimerList = ({ projectId }) => {
           animate="visible"
         >
           {openTimers.map(
-            openTimer =>
-              openTimer.projectId === projectId && (
+            (openTimer) =>
+              openTimer.projectId === projectId &&
+              (openTimer.isManual ? (
+                <ManualTimer key={openTimer.id} timer={openTimer} />
+              ) : (
                 <Timer key={openTimer.id} timer={openTimer} />
-              )
+              ))
           )}
         </motion.div>
       )}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Button,
   Grid,
@@ -7,32 +7,32 @@ import {
   Paper,
   TextField,
   Tooltip,
-} from '@material-ui/core';
-import { Pause, PlayArrow, Stop } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
+} from "@material-ui/core";
+import { Pause, PlayArrow, Stop } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
 import {
   deleteTimerById,
   updateTimer,
-} from '../../../redux/actions/timerActions';
-import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
-import Counter from './Counter';
-import firebase from '../../../firebase/firebase';
-import { motion } from 'framer-motion';
+} from "../../../redux/actions/timerActions";
+import ComfirmationModal from "../../Shared/Modals/ComfirmationModal";
+import Counter from "../Counter/Counter";
+import firebase from "../../../firebase/firebase";
+import { motion } from "framer-motion";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     borderRadius: 20,
     padding: 24,
     marginBottom: 16,
   },
   btnsWrapper: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'flex',
-      justifyContent: 'center',
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      justifyContent: "center",
       marginBottom: 16,
     },
-    [theme.breakpoints.only('xs')]: {
-      justifyContent: 'space-around',
+    [theme.breakpoints.only("xs")]: {
+      justifyContent: "space-around",
     },
   },
   btnPlay: {
@@ -41,34 +41,34 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[3],
     marginRight: 8,
     marginLeft: 8,
-    '&:hover': {
+    "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
-    '&:disabled': {
+    "&:disabled": {
       backgroundColor: theme.palette.action.disabledBackground,
     },
-    [theme.breakpoints.only('sm')]: {
+    [theme.breakpoints.only("sm")]: {
       marginRight: 24,
       marginLeft: 24,
       padding: 14,
     },
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       padding: 14,
     },
   },
   actionWrapper: {
     paddingTop: 16,
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
   },
   btnMarginLeft: {
     marginLeft: 8,
   },
   counterWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.only('xs')]: {
-      justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.only("xs")]: {
+      justifyContent: "center",
       padding: 16,
     },
   },
@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Timer = ({ timer }) => {
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [playBtn, setPlayBtn] = useState(false);
   const [pauseBtn, setPauseBtn] = useState(true);
   const [resetBtn, setResetBtn] = useState(true);
@@ -97,7 +97,7 @@ const Timer = ({ timer }) => {
     },
   };
 
-  const handleCommentChange = e => {
+  const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
 
@@ -119,7 +119,7 @@ const Timer = ({ timer }) => {
     setPauseBtn(false);
     setResetBtn(false);
     setInterv(setInterval(runTimer, 1000));
-    const timerDate = timer.start === 0 ? 'start' : 'tempStart';
+    const timerDate = timer.start === 0 ? "start" : "tempStart";
     dispatch(
       updateTimer({
         id: timer.id,
@@ -214,7 +214,7 @@ const Timer = ({ timer }) => {
           <Tooltip
             placement="top"
             title={
-              !playBtn ? (differenceInSeconds === 0 ? 'Start' : 'Resume') : ''
+              !playBtn ? (differenceInSeconds === 0 ? "Start" : "Resume") : ""
             }
           >
             <span>
@@ -227,7 +227,7 @@ const Timer = ({ timer }) => {
               </IconButton>
             </span>
           </Tooltip>
-          <Tooltip placement="top" title={!pauseBtn ? 'Pause' : ''}>
+          <Tooltip placement="top" title={!pauseBtn ? "Pause" : ""}>
             <IconButton
               className={classes.btnPlay}
               disabled={pauseBtn}
@@ -236,7 +236,7 @@ const Timer = ({ timer }) => {
               <Pause />
             </IconButton>
           </Tooltip>
-          <Tooltip placement="top" title={!resetBtn ? 'Reset' : ''}>
+          <Tooltip placement="top" title={!resetBtn ? "Reset" : ""}>
             <span>
               <IconButton
                 className={classes.btnPlay}
@@ -264,7 +264,7 @@ const Timer = ({ timer }) => {
       </Grid>
       <div className={classes.actionWrapper}>
         <ComfirmationModal
-          triggerBtn={{ type: 'deleteBtn', text: 'Delete timer' }}
+          triggerBtn={{ type: "deleteBtn", text: "Delete timer" }}
           title={`Are you sure you want to delete this timer?`}
           action={handleDeleteTimer}
         />

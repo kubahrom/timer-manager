@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   IconButton,
@@ -6,31 +6,31 @@ import {
   Menu,
   MenuItem,
   Typography,
-} from '@material-ui/core';
-import { AddAlarm, ArrowBack, MoreVert } from '@material-ui/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import ComfirmationModal from '../../Shared/Modals/ComfirmationModal';
-import { deleteProjectById } from '../../../redux/actions/projectActions';
-import ModalWithButton from '../../Shared/Modals/ModalWithButton';
-import ProjectForm from '../../Shared/Modals/ProjectForm';
-import { deleteTimersByProjectId } from '../../../redux/actions/timerActions';
+} from "@material-ui/core";
+import { Alarm, AddAlarm, ArrowBack, MoreVert } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import ComfirmationModal from "../../Shared/Modals/ComfirmationModal";
+import { deleteProjectById } from "../../../redux/actions/projectActions";
+import ModalWithButton from "../../Shared/Modals/ModalWithButton";
+import ProjectForm from "../../Shared/Modals/ProjectForm";
+import { deleteTimersByProjectId } from "../../../redux/actions/timerActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     paddingRight: 90,
-    position: 'relative',
+    position: "relative",
     paddingBottom: 16,
   },
   menuItem: {
-    display: 'flex',
-    alignItems: 'center',
-    '& svg': {
+    display: "flex",
+    alignItems: "center",
+    "& svg": {
       marginRight: 4,
     },
   },
   sideIcons: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     top: 16,
   },
@@ -43,19 +43,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProjectInfo = React.forwardRef(
-  ({ name, ownerId, projectId, handleCreateTimer }, ref) => {
+  (
+    { name, ownerId, projectId, handleCreateTimer, handleCreateManualTimer },
+    ref
+  ) => {
     const classes = useStyles();
-    const currentUser = useSelector(state => state.user.user);
-    const [owner, setOwner] = useState('');
+    const currentUser = useSelector((state) => state.user.user);
+    const [owner, setOwner] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
     const dispatch = useDispatch();
 
     const handleBackLink = () => {
-      history.push('/');
+      history.push("/");
     };
 
-    const handleMenuOpen = e => {
+    const handleMenuOpen = (e) => {
       setAnchorEl(e.currentTarget);
     };
 
@@ -109,7 +112,7 @@ const ProjectInfo = React.forwardRef(
           </IconButton>
           <IconButton
             className={classes.iconBtn}
-            onClick={e => handleMenuOpen(e)}
+            onClick={(e) => handleMenuOpen(e)}
           >
             <MoreVert fontSize="large" />
           </IconButton>
@@ -122,12 +125,18 @@ const ProjectInfo = React.forwardRef(
           >
             <MenuItem onClick={() => handleCreateTimer(handleMenuClose)}>
               <span className={classes.menuItem}>
-                <AddAlarm />
+                <Alarm />
                 Add Timer
               </span>
             </MenuItem>
+            <MenuItem onClick={() => handleCreateManualTimer(handleMenuClose)}>
+              <span className={classes.menuItem}>
+                <AddAlarm />
+                Add Time Manually
+              </span>
+            </MenuItem>
             <ModalWithButton
-              triggerBtn={{ type: 'menuEdit', text: 'Edit' }}
+              triggerBtn={{ type: "menuEdit", text: "Edit" }}
               title="Edit project"
               permanent={true}
               closeMenu={handleMenuClose}
@@ -140,7 +149,7 @@ const ProjectInfo = React.forwardRef(
               />
             </ModalWithButton>
             <ComfirmationModal
-              triggerBtn={{ type: 'deleteMenuItem' }}
+              triggerBtn={{ type: "deleteMenuItem" }}
               title={`Are you sure you want to delete ${name}?`}
               handleMenuClose={handleMenuClose}
               ref={ref}

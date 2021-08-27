@@ -1,31 +1,34 @@
-import { CircularProgress, Container, makeStyles } from '@material-ui/core';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router';
-import { getProject } from '../../redux/actions/projectActions';
-import ProjectInfo from './ProjectInfo/ProjectInfo';
-import { v4 as uuidv4 } from 'uuid';
-import { createNewTimer } from '../../redux/actions/timerActions';
-import TimerList from './TimerList/TimerList';
-import { motion } from 'framer-motion';
+import { CircularProgress, Container, makeStyles } from "@material-ui/core";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useHistory } from "react-router";
+import { getProject } from "../../redux/actions/projectActions";
+import ProjectInfo from "./ProjectInfo/ProjectInfo";
+import { v4 as uuidv4 } from "uuid";
+import {
+  createNewManualTimer,
+  createNewTimer,
+} from "../../redux/actions/timerActions";
+import TimerList from "./TimerList/TimerList";
+import { motion } from "framer-motion";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: 8,
   },
   loading: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '80vh',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "80vh",
   },
 }));
 
 const ProjectDetails = () => {
   const classes = useStyles();
   const { id } = useParams();
-  const { uid } = useSelector(state => state.user.user);
-  const { projects, errorMessage } = useSelector(state => state.projects);
+  const { uid } = useSelector((state) => state.user.user);
+  const { projects, errorMessage } = useSelector((state) => state.projects);
   const dispatch = useDispatch();
   const history = useHistory();
   const [currentProject, setCurrentProject] = useState({});
@@ -39,7 +42,7 @@ const ProjectDetails = () => {
     },
   };
 
-  const handleCreateTimer = closeMenu => {
+  const handleCreateTimer = (closeMenu) => {
     dispatch(
       createNewTimer(
         {
@@ -49,8 +52,28 @@ const ProjectDetails = () => {
           isOpen: true,
           start: 0,
           tempStart: 0,
-          comment: '',
+          comment: "",
           lastValue: 0,
+        },
+        closeMenu
+      )
+    );
+  };
+
+  //FIXME: function to add new manual timer
+  const handleCreateManualTimer = (closeMenu) => {
+    dispatch(
+      createNewManualTimer(
+        {
+          id: uuidv4(),
+          uid: uid,
+          projectId: currentProject.id,
+          isOpen: true,
+          start: 0,
+          tempStart: 0,
+          comment: "",
+          lastValue: 0,
+          isManual: true,
         },
         closeMenu
       )
@@ -61,10 +84,10 @@ const ProjectDetails = () => {
   useEffect(() => {
     if (projects.length === 0 && !errorMessage) {
       dispatch(getProject(id));
-    } else if (errorMessage === 'not-found') {
-      history.replace('/project-not-found');
+    } else if (errorMessage === "not-found") {
+      history.replace("/project-not-found");
     } else {
-      setCurrentProject(projects.find(project => project.id === id));
+      setCurrentProject(projects.find((project) => project.id === id));
     }
   }, [projects, errorMessage, dispatch, id, history, currentProject]);
 
@@ -94,6 +117,7 @@ const ProjectDetails = () => {
             ownerId={currentProject.owner}
             projectId={currentProject.id}
             handleCreateTimer={handleCreateTimer}
+            handleCreateManualTimer={handleCreateManualTimer}
           />
           {currentProject.id && <TimerList projectId={currentProject.id} />}
         </Container>
