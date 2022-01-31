@@ -33,8 +33,8 @@ The app helps you with time managing tasks you spent on various projects.
 
 #### Desktop/Tablet
 
-![Desktop-1](https://github.com/kubahrom/timer-manager/blob/main/screenshots/dekstop-1.png)
-![Desktop-2](https://github.com/kubahrom/timer-manager/blob/main/screenshots/dekstop-2.png)
+![Desktop-1](https://github.com/kubahrom/timer-manager/blob/main/screenshots/desktop-1.png)
+![Desktop-2](https://github.com/kubahrom/timer-manager/blob/main/screenshots/desktop-2.png)
 
 #### Mobile
 
