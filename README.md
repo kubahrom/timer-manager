@@ -1,10 +1,10 @@
 # Timer Manager | React, Redux, Firebase
 
-The app helps you with time managing tasks you spent on various projects.
+Simple time tracking application for managing tasks you spent on one or multiple projects.
 
 ## Demo
 
-[Deployed on Netlify (front-end))](https://kubahrom-timer-manager.netlify.app/)
+[Deployed on Netlify (front-end))](https://timer-manager.kubahrom.dev/)
 
 ## Built using
 
